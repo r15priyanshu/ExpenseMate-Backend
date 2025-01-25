@@ -1,0 +1,24 @@
+package com.anshuit.expensemate.services.impls;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.anshuit.expensemate.entities.Role;
+import com.anshuit.expensemate.repositories.RoleRepository;
+
+@Service
+public class RoleServiceImpl {
+
+	@Autowired
+	private RoleRepository roleRepository;
+
+	public Role saveOrUpdateRole(Role role) {
+		return roleRepository.save(role);
+	}
+
+	public Optional<Role> getRoleByIdOptional(String roleId) {
+		return roleRepository.findById(roleId);
+	}
+}

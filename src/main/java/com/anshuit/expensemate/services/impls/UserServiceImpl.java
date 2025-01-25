@@ -35,4 +35,20 @@ public class UserServiceImpl {
 	public Optional<AppUser> getUserByEmailOptional(String email) {
 		return userRepository.findByEmail(email);
 	}
+
+	public Optional<AppUser> getUserByUserIdOptional(String userId) {
+		return userRepository.findById(userId);
+	}
+
+	public AppUser getUserByUserId(String userId) {
+		return this.getUserByUserIdOptional(userId).orElseThrow(() -> {
+			throw new CustomException(HttpStatus.NOT_FOUND, ExceptionDetailsEnum.USER_NOT_FOUND_WITH_ID, userId);
+		});
+	}
+
+	public AppUser deleteUserByUserId(String userId) {
+		AppUser user = this.getUserByUserId(userId);
+		userRepository.delete(user);
+		return user;
+	}
 }

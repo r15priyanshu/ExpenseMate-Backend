@@ -13,11 +13,11 @@ public class DataTransferServiceImpl {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	public AppUserDto mapAppUserToAppUserDto(AppUser appUser) {
+	public AppUserDto mapUserToUserDto(AppUser appUser) {
 		return modelMapper.map(appUser, AppUserDto.class);
 	}
 
-	public AppUser mapAppUserDtoToAppUser(AppUserDto appUserDto) {
+	public AppUser mapUserDtoToUser(AppUserDto appUserDto) {
 		return modelMapper.map(appUserDto, AppUser.class);
 	}
 }
