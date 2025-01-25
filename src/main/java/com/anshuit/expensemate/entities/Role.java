@@ -1,5 +1,6 @@
 package com.anshuit.expensemate.entities;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,7 +17,7 @@ import lombok.Setter;
 public class Role {
 
 	@Id
-	private String roleId;
+	private ObjectId roleId;
 	private String roleName;
 
 	public Role(String roleName) {

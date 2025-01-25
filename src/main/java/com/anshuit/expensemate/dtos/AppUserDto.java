@@ -13,4 +13,5 @@ public class AppUserDto {
 	private String lastName;
 	private String email;
 	private String password;
+	private RoleDto role;
 }

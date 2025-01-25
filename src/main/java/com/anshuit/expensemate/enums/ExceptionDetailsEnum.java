@@ -9,7 +9,13 @@ public enum ExceptionDetailsEnum {
 
 	USER_NOT_FOUND_WITH_EMAIL("1002", "User not found with email : %s"),
 
-	USER_ALREADY_EXIST_WITH_EMAIL("1003", "User already exist with email : %s");
+	USER_ALREADY_EXIST_WITH_EMAIL("1003", "User already exist with email : %s"),
+
+	// Role Related Constants
+	ROLE_NOT_FOUND_WITH_ID("1051", "Role not found with roleId : %s"),
+
+	// Expense Related Constants
+	EXPENSE_NOT_FOUND_WITH_ID("1101", "Expense not found with expenseId : %s");
 
 	private final String exceptionCode;
 	private final String exceptionMessage;

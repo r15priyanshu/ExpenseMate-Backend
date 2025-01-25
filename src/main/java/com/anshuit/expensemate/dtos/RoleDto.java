@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RoleDto {
-	private int roleId;
+	private String roleId;
 	private String roleName;
 
 	@JsonIgnore
