@@ -1,5 +1,8 @@
 package com.anshuit.expensemate.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -26,4 +29,10 @@ public class AppUser {
 
 	@DBRef
 	private Role role;
+
+	@DBRef
+	private List<Category> customExpenseCategories = new ArrayList<>();
+
+	@DBRef
+	private List<Expense> expenses = new ArrayList<>();
 }

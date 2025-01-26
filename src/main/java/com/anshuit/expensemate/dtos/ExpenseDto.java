@@ -2,8 +2,6 @@ package com.anshuit.expensemate.dtos;
 
 import java.time.LocalDate;
 
-import com.anshuit.expensemate.entities.AppUser;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,5 +14,5 @@ public class ExpenseDto {
 	private double expenseAmount;
 	private LocalDate expenseDate;
 	private String expenseDescription;
-	private AppUser user;
+	private CategoryDto category;
 }

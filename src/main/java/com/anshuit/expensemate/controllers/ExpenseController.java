@@ -24,11 +24,11 @@ public class ExpenseController {
 	@Autowired
 	private DataTransferServiceImpl dataTransferService;
 
-	@PostMapping("/expenses/users/{userId}")
+	@PostMapping("/expenses/users/{userId}/category/{categoryId}")
 	public ResponseEntity<ExpenseDto> createExpense(@PathVariable("userId") ObjectId userId,
-			@RequestBody ExpenseDto expenseDto) {
+			@PathVariable("categoryId") ObjectId categoryId, @RequestBody ExpenseDto expenseDto) {
 		Expense createdExpense = expenseService.createExpense(userId,
-				dataTransferService.mapExpenseDtoToExpense(expenseDto));
+				dataTransferService.mapExpenseDtoToExpense(expenseDto), categoryId);
 		ExpenseDto createdExpenseDto = dataTransferService.mapExpenseToExpenseDto(createdExpense);
 		return new ResponseEntity<>(createdExpenseDto, HttpStatus.CREATED);
 	}

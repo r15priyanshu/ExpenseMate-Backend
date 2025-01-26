@@ -1,5 +1,7 @@
 package com.anshuit.expensemate.dtos;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,4 +16,6 @@ public class AppUserDto {
 	private String email;
 	private String password;
 	private RoleDto role;
+	private List<CategoryDto> customExpenseCategories;
+	private List<ExpenseDto> expenses;
 }

@@ -15,7 +15,14 @@ public enum ExceptionDetailsEnum {
 	ROLE_NOT_FOUND_WITH_ID("1051", "Role not found with roleId : %s"),
 
 	// Expense Related Constants
-	EXPENSE_NOT_FOUND_WITH_ID("1101", "Expense not found with expenseId : %s");
+	EXPENSE_NOT_FOUND_WITH_ID("1101", "Expense not found with expenseId : %s"),
+	
+	// Category Related Constants
+	CATEGORY_NOT_FOUND_WITH_ID("1150", "Category not found with categoryId : %s"),
+	
+	DEFAULT_EXPENSE_CATEGORY_NOT_FOUND_WITH_ID("1151", "Default Expense Category not found with categoryId : %s"),
+	
+	CUSTOM_EXPENSE_CATEGORY_NOT_FOUND_WITH_ID("1152", "Custom Expense Category not found with categoryId : %s");
 
 	private final String exceptionCode;
 	private final String exceptionMessage;

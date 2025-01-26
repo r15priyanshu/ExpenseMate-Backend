@@ -23,5 +23,5 @@ public class Expense {
 	private String expenseDescription;
 
 	@DBRef
-	private AppUser user;
+	private Category category;
 }

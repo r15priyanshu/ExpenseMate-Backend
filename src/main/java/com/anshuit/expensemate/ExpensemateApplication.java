@@ -1,5 +1,7 @@
 package com.anshuit.expensemate;
 
+import java.util.List;
+
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -9,7 +11,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.anshuit.expensemate.constants.GlobalConstants;
 import com.anshuit.expensemate.entities.AppUser;
+import com.anshuit.expensemate.entities.CustomExpenseCategory;
+import com.anshuit.expensemate.entities.DefaultExpenseCategory;
 import com.anshuit.expensemate.entities.Role;
+import com.anshuit.expensemate.services.impls.CustomExpenseCategoryServiceImpl;
+import com.anshuit.expensemate.services.impls.DefaultExpenseCategoryServiceImpl;
 import com.anshuit.expensemate.services.impls.RoleServiceImpl;
 import com.anshuit.expensemate.services.impls.UserServiceImpl;
 
@@ -21,6 +27,12 @@ public class ExpensemateApplication implements ApplicationRunner {
 
 	@Autowired
 	private RoleServiceImpl roleService;
+
+	@Autowired
+	private DefaultExpenseCategoryServiceImpl defaultExpenseCategoryService;
+
+	@Autowired
+	private CustomExpenseCategoryServiceImpl customExpenseCategoryService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ExpensemateApplication.class, args);
@@ -36,6 +48,40 @@ public class ExpensemateApplication implements ApplicationRunner {
 		roleService.getRoleByIdOptional(roleId2)
 				.orElseGet(() -> roleService.saveOrUpdateRole(new Role(roleId2, GlobalConstants.DEFAULT_ROLE_TWO)));
 
+		// CREATING 2 DEFAULT CATEGORIES FOR THIS APPLICATION
+		ObjectId defaultCategoryId1 = new ObjectId(GlobalConstants.DEFAULT_CATEGORY_ONE_ID);
+		defaultExpenseCategoryService.getDefaultExpenseCategoryByIdOptional(defaultCategoryId1).orElseGet(() -> {
+			DefaultExpenseCategory category = new DefaultExpenseCategory();
+			category.setCategoryId(defaultCategoryId1);
+			category.setCategoryName(GlobalConstants.DEFAULT_CATEGORY_ONE);
+			return defaultExpenseCategoryService.saveOrUpdateDefaultExpenseCategory(category);
+		});
+		ObjectId defaultCategoryId2 = new ObjectId(GlobalConstants.DEFAULT_CATEGORY_TWO_ID);
+		defaultExpenseCategoryService.getDefaultExpenseCategoryByIdOptional(defaultCategoryId2).orElseGet(() -> {
+			DefaultExpenseCategory category = new DefaultExpenseCategory();
+			category.setCategoryId(defaultCategoryId2);
+			category.setCategoryName(GlobalConstants.DEFAULT_CATEGORY_TWO);
+			return defaultExpenseCategoryService.saveOrUpdateDefaultExpenseCategory(category);
+		});
+
+		// CREATING 2 CUSTOM CATEGORIES FOR SOME USERS
+		ObjectId customCategoryId1 = new ObjectId(GlobalConstants.CUSTOM_CATEGORY_ONE_ID);
+		CustomExpenseCategory customExpenseCategory1 = customExpenseCategoryService
+				.getCustomExpenseCategoryByIdOptional(customCategoryId1).orElseGet(() -> {
+					CustomExpenseCategory category = new CustomExpenseCategory();
+					category.setCategoryId(customCategoryId1);
+					category.setCategoryName(GlobalConstants.CUSTOM_CATEGORY_ONE);
+					return customExpenseCategoryService.saveOrUpdateCustomExpenseCategory(category);
+				});
+		ObjectId customCategoryId2 = new ObjectId(GlobalConstants.CUSTOM_CATEGORY_TWO_ID);
+		CustomExpenseCategory customExpenseCategory2 = customExpenseCategoryService
+				.getCustomExpenseCategoryByIdOptional(customCategoryId2).orElseGet(() -> {
+					CustomExpenseCategory category = new CustomExpenseCategory();
+					category.setCategoryId(customCategoryId2);
+					category.setCategoryName(GlobalConstants.CUSTOM_CATEGORY_TWO);
+					return customExpenseCategoryService.saveOrUpdateCustomExpenseCategory(category);
+				});
+
 		// CREATING 2 DEFAULT EMPLOYEES FOR THIS APPLICATION
 		userService.getUserByEmailOptional("anshu@gmail.com").orElseGet(() -> {
 			AppUser user1 = new AppUser();
@@ -44,6 +90,7 @@ public class ExpensemateApplication implements ApplicationRunner {
 			user1.setLastName("Anand");
 			user1.setEmail("anshu@gmail.com");
 			user1.setPassword("12345");
+			user1.getCustomExpenseCategories().addAll(List.of(customExpenseCategory1, customExpenseCategory2));
 			AppUser savedUser1 = userService.createUser(user1, GlobalConstants.DEFAULT_ROLE_ONE_ID);
 			return savedUser1;
 		});
@@ -58,6 +105,6 @@ public class ExpensemateApplication implements ApplicationRunner {
 			AppUser savedUser2 = userService.createUser(user2, GlobalConstants.DEFAULT_ROLE_TWO_ID);
 			return savedUser2;
 		});
-	}
 
+	}
 }
