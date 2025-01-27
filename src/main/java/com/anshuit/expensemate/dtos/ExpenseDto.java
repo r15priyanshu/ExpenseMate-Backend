@@ -15,4 +15,5 @@ public class ExpenseDto {
 	private LocalDate expenseDate;
 	private String expenseDescription;
 	private CategoryDto category;
+	private String userId;
 }

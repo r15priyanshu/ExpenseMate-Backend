@@ -39,7 +39,8 @@ public class ExpenseServiceImpl {
 	}
 
 	public Expense createExpense(ObjectId userId, Expense expense, ObjectId categoryId) {
-		AppUser user = userService.getUserByUserId(userId);
+		boolean fetchPartial = true;
+		AppUser user = userService.getUserByUserId(userId, fetchPartial);
 
 		Optional<DefaultExpenseCategory> defaultCategory = defaultExpenseCategoryService
 				.getDefaultExpenseCategoryByIdOptional(categoryId);
@@ -55,6 +56,7 @@ public class ExpenseServiceImpl {
 						categoryId);
 			}
 		}
+		expense.setUserId(user.getUserId());
 		Expense createdExpense = this.saveOrUpdateExpense(expense);
 
 		// Updating the User Expenses List Also

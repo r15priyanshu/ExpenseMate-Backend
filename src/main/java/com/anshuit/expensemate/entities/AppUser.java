@@ -33,6 +33,6 @@ public class AppUser {
 	@DBRef
 	private List<Category> customExpenseCategories = new ArrayList<>();
 
-	@DBRef
+	@DBRef(lazy = true)
 	private List<Expense> expenses = new ArrayList<>();
 }

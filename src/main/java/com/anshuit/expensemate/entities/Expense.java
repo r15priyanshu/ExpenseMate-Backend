@@ -24,4 +24,6 @@ public class Expense {
 
 	@DBRef
 	private Category category;
+	
+    private ObjectId userId;
 }
