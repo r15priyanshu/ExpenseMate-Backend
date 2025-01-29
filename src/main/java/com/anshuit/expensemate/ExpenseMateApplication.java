@@ -20,7 +20,7 @@ import com.anshuit.expensemate.services.impls.RoleServiceImpl;
 import com.anshuit.expensemate.services.impls.UserServiceImpl;
 
 @SpringBootApplication
-public class ExpensemateApplication implements ApplicationRunner {
+public class ExpenseMateApplication implements ApplicationRunner {
 
 	@Autowired
 	private UserServiceImpl userService;
@@ -35,7 +35,7 @@ public class ExpensemateApplication implements ApplicationRunner {
 	private CustomExpenseCategoryServiceImpl customExpenseCategoryService;
 
 	public static void main(String[] args) {
-		SpringApplication.run(ExpensemateApplication.class, args);
+		SpringApplication.run(ExpenseMateApplication.class, args);
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.anshuit.expensemate.entities.AppUser;
@@ -23,6 +24,9 @@ public class UserServiceImpl {
 	@Autowired
 	private RoleServiceImpl roleService;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	public AppUser saveOrUpdateUser(AppUser appUser) {
 		return userRepository.save(appUser);
 	}
@@ -34,7 +38,7 @@ public class UserServiceImpl {
 			throw new CustomException(HttpStatus.BAD_REQUEST, ExceptionDetailsEnum.USER_ALREADY_EXIST_WITH_EMAIL,
 					user.getEmail());
 		}
-		user.setPassword(user.getPassword());
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setRole(roleService.getRoleById(new ObjectId(roleId)));
 		user.setCustomExpenseCategories(new ArrayList<>());
 		user.setExpenses(new ArrayList<>());
@@ -110,5 +114,4 @@ public class UserServiceImpl {
 			throw new CustomException(HttpStatus.NOT_FOUND, ExceptionDetailsEnum.USER_NOT_FOUND_WITH_EMAIL, email);
 		});
 	}
-
 }
