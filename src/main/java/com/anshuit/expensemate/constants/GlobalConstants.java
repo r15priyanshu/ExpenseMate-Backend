@@ -1,5 +1,6 @@
 package com.anshuit.expensemate.constants;
 
+import java.util.List;
 import java.util.Set;
 
 public class GlobalConstants {
@@ -8,6 +9,7 @@ public class GlobalConstants {
 
 	public static final String DEFAULT_APPLICATION_NAME = "ExpenseMate";
 	public static final String DEFAULT_FRONTEND_APPLICATION_NAME = "ExpenseMate Frontend";
+	public static final String DEFAULT_FRONTEND_ORIGIN_URL = "http://localhost:4200";
 
 	public static final String DEFAULT_ROLE_ONE = "ROLE_NORMAL";
 	public static final String DEFAULT_ROLE_ONE_ID = "aaaaaaaaaaaaaaaaaaaaaaaa";
@@ -32,6 +34,11 @@ public class GlobalConstants {
 
 	public static final String LOGIN_URL = "/auth/login";
 	public static final String REGISTER_URL = "/auth/register";
+	
+	public static final List<String> ALLOWED_ORIGINS_LIST = List.of(DEFAULT_FRONTEND_ORIGIN_URL);
+	public static final List<String> ALLOWED_HEADERS_LIST = List.of("*");
+	public static final List<String> ALLOWED_METHODS_LIST = List.of("GET", "PUT", "POST", "DELETE", "OPTIONS");
+	public static final List<String> EXPOSED_HEADERS_LIST = List.of("*");
 
 	// SET OF URLS FOR WHICH JWT TOKEN VALIDATOR FILTER SHOULD NOT RUN
 	public static final Set<String> EXCLUDED_PATHS_FOR_JWT_TOKEN_VALIDATOR_FILTER_SET = Set
