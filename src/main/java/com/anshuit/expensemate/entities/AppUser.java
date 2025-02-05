@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -26,7 +25,7 @@ public class AppUser implements UserDetails{
 	private static final long serialVersionUID = -3173463497851204487L;
 	
 	@Id
-	private ObjectId userId;
+	private String userId;
 	private String firstName;
 	private String lastName;
 

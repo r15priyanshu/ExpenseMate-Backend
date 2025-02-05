@@ -2,7 +2,6 @@ package com.anshuit.expensemate;
 
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -41,22 +40,22 @@ public class ExpenseMateApplication implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		// CREATING 2 DEFAULT ROLES FOR THIS APPLICATION
-		ObjectId roleId1 = new ObjectId(GlobalConstants.DEFAULT_ROLE_ONE_ID);
-		ObjectId roleId2 = new ObjectId(GlobalConstants.DEFAULT_ROLE_TWO_ID);
+		String roleId1 = GlobalConstants.DEFAULT_ROLE_ONE_ID;
+		String roleId2 = GlobalConstants.DEFAULT_ROLE_TWO_ID;
 		roleService.getRoleByIdOptional(roleId1)
 				.orElseGet(() -> roleService.saveOrUpdateRole(new Role(roleId1, GlobalConstants.DEFAULT_ROLE_ONE)));
 		roleService.getRoleByIdOptional(roleId2)
 				.orElseGet(() -> roleService.saveOrUpdateRole(new Role(roleId2, GlobalConstants.DEFAULT_ROLE_TWO)));
 
 		// CREATING 2 DEFAULT CATEGORIES FOR THIS APPLICATION
-		ObjectId defaultCategoryId1 = new ObjectId(GlobalConstants.DEFAULT_CATEGORY_ONE_ID);
+		String defaultCategoryId1 = GlobalConstants.DEFAULT_CATEGORY_ONE_ID;
 		defaultExpenseCategoryService.getDefaultExpenseCategoryByIdOptional(defaultCategoryId1).orElseGet(() -> {
 			DefaultExpenseCategory category = new DefaultExpenseCategory();
 			category.setCategoryId(defaultCategoryId1);
 			category.setCategoryName(GlobalConstants.DEFAULT_CATEGORY_ONE);
 			return defaultExpenseCategoryService.saveOrUpdateDefaultExpenseCategory(category);
 		});
-		ObjectId defaultCategoryId2 = new ObjectId(GlobalConstants.DEFAULT_CATEGORY_TWO_ID);
+		String defaultCategoryId2 = GlobalConstants.DEFAULT_CATEGORY_TWO_ID;
 		defaultExpenseCategoryService.getDefaultExpenseCategoryByIdOptional(defaultCategoryId2).orElseGet(() -> {
 			DefaultExpenseCategory category = new DefaultExpenseCategory();
 			category.setCategoryId(defaultCategoryId2);
@@ -65,7 +64,7 @@ public class ExpenseMateApplication implements ApplicationRunner {
 		});
 
 		// CREATING 2 CUSTOM CATEGORIES FOR SOME USERS
-		ObjectId customCategoryId1 = new ObjectId(GlobalConstants.CUSTOM_CATEGORY_ONE_ID);
+		String customCategoryId1 = GlobalConstants.CUSTOM_CATEGORY_ONE_ID;
 		CustomExpenseCategory customExpenseCategory1 = customExpenseCategoryService
 				.getCustomExpenseCategoryByIdOptional(customCategoryId1).orElseGet(() -> {
 					CustomExpenseCategory category = new CustomExpenseCategory();
@@ -73,7 +72,7 @@ public class ExpenseMateApplication implements ApplicationRunner {
 					category.setCategoryName(GlobalConstants.CUSTOM_CATEGORY_ONE);
 					return customExpenseCategoryService.saveOrUpdateCustomExpenseCategory(category);
 				});
-		ObjectId customCategoryId2 = new ObjectId(GlobalConstants.CUSTOM_CATEGORY_TWO_ID);
+		String customCategoryId2 = GlobalConstants.CUSTOM_CATEGORY_TWO_ID;
 		CustomExpenseCategory customExpenseCategory2 = customExpenseCategoryService
 				.getCustomExpenseCategoryByIdOptional(customCategoryId2).orElseGet(() -> {
 					CustomExpenseCategory category = new CustomExpenseCategory();
@@ -85,7 +84,7 @@ public class ExpenseMateApplication implements ApplicationRunner {
 		// CREATING 2 DEFAULT EMPLOYEES FOR THIS APPLICATION
 		userService.getUserByEmailOptional("anshu@gmail.com").orElseGet(() -> {
 			AppUser user1 = new AppUser();
-			user1.setUserId(new ObjectId(GlobalConstants.DEFAULT_USER_ONE_ID));
+			user1.setUserId(GlobalConstants.DEFAULT_USER_ONE_ID);
 			user1.setFirstName("Anshu");
 			user1.setLastName("Anand");
 			user1.setEmail("anshu@gmail.com");
@@ -97,7 +96,7 @@ public class ExpenseMateApplication implements ApplicationRunner {
 
 		userService.getUserByEmailOptional("shalu@gmail.com").orElseGet(() -> {
 			AppUser user2 = new AppUser();
-			user2.setUserId(new ObjectId(GlobalConstants.DEFAULT_USER_TWO_ID));
+			user2.setUserId(GlobalConstants.DEFAULT_USER_TWO_ID);
 			user2.setFirstName("Shalu");
 			user2.setLastName("Kumari");
 			user2.setEmail("shalu@gmail.com");

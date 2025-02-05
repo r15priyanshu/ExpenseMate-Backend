@@ -1,6 +1,5 @@
 package com.anshuit.expensemate.controllers;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +24,8 @@ public class ExpenseController {
 	private DataTransferServiceImpl dataTransferService;
 
 	@PostMapping("/expenses/users/{userId}/category/{categoryId}")
-	public ResponseEntity<ExpenseDto> createExpense(@PathVariable("userId") ObjectId userId,
-			@PathVariable("categoryId") ObjectId categoryId, @RequestBody ExpenseDto expenseDto) {
+	public ResponseEntity<ExpenseDto> createExpense(@PathVariable("userId") String userId,
+			@PathVariable("categoryId") String categoryId, @RequestBody ExpenseDto expenseDto) {
 		Expense createdExpense = expenseService.createExpense(userId,
 				dataTransferService.mapExpenseDtoToExpense(expenseDto), categoryId);
 		ExpenseDto createdExpenseDto = dataTransferService.mapExpenseToExpenseDto(createdExpense);
@@ -34,7 +33,7 @@ public class ExpenseController {
 	}
 
 	@GetMapping("/expenses/{expenseId}")
-	public ResponseEntity<ExpenseDto> getExpenseByExpenseId(@PathVariable("expenseId") ObjectId expenseId) {
+	public ResponseEntity<ExpenseDto> getExpenseByExpenseId(@PathVariable("expenseId") String expenseId) {
 		Expense expense = expenseService.getExpenseByExpenseId(expenseId);
 		ExpenseDto expenseDto = dataTransferService.mapExpenseToExpenseDto(expense);
 		return new ResponseEntity<>(expenseDto, HttpStatus.OK);

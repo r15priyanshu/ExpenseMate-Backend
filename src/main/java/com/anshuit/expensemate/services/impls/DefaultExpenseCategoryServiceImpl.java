@@ -2,7 +2,6 @@ package com.anshuit.expensemate.services.impls;
 
 import java.util.Optional;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,11 +21,11 @@ public class DefaultExpenseCategoryServiceImpl {
 		return defaultExpenseCategoryRepository.save(defaultExpenseCategory);
 	}
 
-	public Optional<DefaultExpenseCategory> getDefaultExpenseCategoryByIdOptional(ObjectId defaultExpenseCategoryId) {
+	public Optional<DefaultExpenseCategory> getDefaultExpenseCategoryByIdOptional(String defaultExpenseCategoryId) {
 		return defaultExpenseCategoryRepository.findById(defaultExpenseCategoryId);
 	}
 
-	public DefaultExpenseCategory getDefaultExpenseCategoryById(ObjectId defaultExpenseCategoryId) {
+	public DefaultExpenseCategory getDefaultExpenseCategoryById(String defaultExpenseCategoryId) {
 		return this.getDefaultExpenseCategoryByIdOptional(defaultExpenseCategoryId).orElseThrow(() -> {
 			throw new CustomException(HttpStatus.NOT_FOUND, ExceptionDetailsEnum.DEFAULT_EXPENSE_CATEGORY_NOT_FOUND_WITH_ID,
 					defaultExpenseCategoryId);

@@ -2,7 +2,6 @@ package com.anshuit.expensemate.controllers;
 
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +37,7 @@ public class UserController {
 	}
 
 	@GetMapping("/users/{userId}")
-	public ResponseEntity<AppUserDto> getUserByUserId(@PathVariable("userId") ObjectId userId,
+	public ResponseEntity<AppUserDto> getUserByUserId(@PathVariable("userId") String userId,
 			@RequestParam(name = "fetchPartial") boolean fetchPartial) {
 		AppUser appUser = userService.getUserByUserId(userId, fetchPartial);
 		AppUserDto appUserDto = dataTransferService.mapUserToUserDto(appUser);
@@ -62,7 +61,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("/users/{userId}")
-	public ResponseEntity<AppUserDto> deleteUserByUserId(@PathVariable("userId") ObjectId userId) {
+	public ResponseEntity<AppUserDto> deleteUserByUserId(@PathVariable("userId") String userId) {
 		AppUser user = userService.deleteUserByUserId(userId);
 		AppUserDto userDto = dataTransferService.mapUserToUserDto(user);
 		return new ResponseEntity<>(userDto, HttpStatus.OK);

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,21 +38,21 @@ public class UserServiceImpl {
 					user.getEmail());
 		}
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		user.setRole(roleService.getRoleById(new ObjectId(roleId)));
+		user.setRole(roleService.getRoleById(roleId));
 		user.setCustomExpenseCategories(new ArrayList<>());
 		user.setExpenses(new ArrayList<>());
 		return this.saveOrUpdateUser(user);
 	}
 
-	public Optional<AppUser> getUserByUserIdOptional(ObjectId userId) {
+	public Optional<AppUser> getUserByUserIdOptional(String userId) {
 		return userRepository.findById(userId);
 	}
 
-	public Optional<AppUser> getUserByUserIdPartilOptional(ObjectId userId) {
+	public Optional<AppUser> getUserByUserIdPartilOptional(String userId) {
 		return userRepository.findByIdPartial(userId);
 	}
 
-	public AppUser getUserByUserId(ObjectId userId, boolean fetchPartial) {
+	public AppUser getUserByUserId(String userId, boolean fetchPartial) {
 		if (fetchPartial) {
 			return this.getUserByUserIdPartial(userId);
 		} else {
@@ -85,19 +84,19 @@ public class UserServiceImpl {
 		}
 	}
 
-	public AppUser deleteUserByUserId(ObjectId userId) {
+	public AppUser deleteUserByUserId(String userId) {
 		AppUser user = this.getUserByUserId(userId);
 		userRepository.delete(user);
 		return user;
 	}
 
-	private AppUser getUserByUserId(ObjectId userId) {
+	private AppUser getUserByUserId(String userId) {
 		return this.getUserByUserIdOptional(userId).orElseThrow(() -> {
 			throw new CustomException(HttpStatus.NOT_FOUND, ExceptionDetailsEnum.USER_NOT_FOUND_WITH_ID, userId);
 		});
 	}
 
-	private AppUser getUserByUserIdPartial(ObjectId userId) {
+	private AppUser getUserByUserIdPartial(String userId) {
 		return this.getUserByUserIdPartilOptional(userId).orElseThrow(() -> {
 			throw new CustomException(HttpStatus.NOT_FOUND, ExceptionDetailsEnum.USER_NOT_FOUND_WITH_ID, userId);
 		});

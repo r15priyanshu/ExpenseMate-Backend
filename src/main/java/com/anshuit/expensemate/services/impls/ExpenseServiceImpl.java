@@ -2,7 +2,6 @@ package com.anshuit.expensemate.services.impls;
 
 import java.util.Optional;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -38,7 +37,7 @@ public class ExpenseServiceImpl {
 		return expenseRepository.save(expense);
 	}
 
-	public Expense createExpense(ObjectId userId, Expense expense, ObjectId categoryId) {
+	public Expense createExpense(String userId, Expense expense, String categoryId) {
 		boolean fetchPartial = true;
 		AppUser user = userService.getUserByUserId(userId, fetchPartial);
 
@@ -66,11 +65,11 @@ public class ExpenseServiceImpl {
 		return createdExpense;
 	}
 
-	public Optional<Expense> getExpenseByExpenseIdOptional(ObjectId expenseId) {
+	public Optional<Expense> getExpenseByExpenseIdOptional(String expenseId) {
 		return expenseRepository.findById(expenseId);
 	}
 
-	public Expense getExpenseByExpenseId(ObjectId expenseId) {
+	public Expense getExpenseByExpenseId(String expenseId) {
 		return this.getExpenseByExpenseIdOptional(expenseId).orElseThrow(() -> {
 			throw new CustomException(HttpStatus.NOT_FOUND, ExceptionDetailsEnum.EXPENSE_NOT_FOUND_WITH_ID, expenseId);
 		});

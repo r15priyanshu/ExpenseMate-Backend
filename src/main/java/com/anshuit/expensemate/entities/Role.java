@@ -1,6 +1,5 @@
 package com.anshuit.expensemate.entities;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,7 +19,7 @@ public class Role implements GrantedAuthority {
 	private static final long serialVersionUID = 3391150225279776406L;
 
 	@Id
-	private ObjectId roleId;
+	private String roleId;
 	private String roleName;
 
 	public Role(String roleName) {
