@@ -29,7 +29,19 @@ public enum ExceptionDetailsEnum {
 	// JWT Related Constants
 	JWT_MALFORMED_EXCEPTION_MESSAGE("3001", "Token Malformed !! Token Might Have Been Tampered !!"),
 
-	JWT_EXPIRED_EXCEPTION_MESSAGE("3002", "Token Already Expired !!");
+	JWT_EXPIRED_EXCEPTION_MESSAGE("3002", "Token Already Expired !!"),
+	
+	JWT_SIGNATURE_EXCEPTION_MESSAGE("3003", "JWT Signature Does Not Match Locally Computed signature !! Token Might Have Been Tampered !!"),
+	
+	REFRESH_TOKEN_NOT_FOUND_WITH_ID("3004", "Refresh Token Not Found With Id : %s"),
+	
+	REFRESH_TOKEN_NOT_FOUND_FOR_USER_WITH_USER_ID("3004", "Refresh Token Not Found For User With UserId : %s"),
+
+	REFRESH_TOKEN_NOT_FOUND_WITH_TOKEN("3005", "Refresh Token Not Found With Token Value : %s"),
+
+	REFRESH_TOKEN_EXPIRED_WITH_PERFORM_RE_LOGIN_MSG("3006", "Refresh Token Already Expired !! Please Re-Login !!"),
+	
+	REFRESH_TOKEN_DOES_NOT_BELONG_TO_USER_WITH_ID("4007", "Refresh Token Does Not Belong To User With Id : %s !!");
 
 	private final String exceptionCode;
 	private final String exceptionMessage;

@@ -21,6 +21,7 @@ import com.anshuit.expensemate.dtos.LoginRequestDto;
 import com.anshuit.expensemate.entities.AppUser;
 import com.anshuit.expensemate.exceptions.CustomException;
 import com.anshuit.expensemate.services.impls.DataTransferServiceImpl;
+import com.anshuit.expensemate.services.impls.RefreshTokenServiceImpl;
 import com.anshuit.expensemate.services.impls.UserServiceImpl;
 import com.anshuit.expensemate.utils.JWTUtil;
 
@@ -37,6 +38,9 @@ public class AuthenticationController {
 
 	@Autowired
 	private UserServiceImpl userService;
+
+	@Autowired
+	private RefreshTokenServiceImpl refreshTokenService;
 
 	@Autowired
 	private DataTransferServiceImpl dataTransferService;
@@ -72,8 +76,10 @@ public class AuthenticationController {
 			}
 		}
 
-		// Setting The Token In Response Header
+		// Setting The Tokens In Response Header
 		response.setHeader(GlobalConstants.JWT_TOKEN_RESPONSE_HEADER_KEY, token);
+		response.setHeader(GlobalConstants.JWT_REFRESH_TOKEN_RESPONSE_HEADER_KEY,
+				refreshTokenService.getOrGenerateRefreshToken(user).getRefreshToken());
 		AppUserDto userDto = dataTransferService.mapUserToUserDto(user);
 		return new ResponseEntity<>(userDto, HttpStatus.OK);
 	}

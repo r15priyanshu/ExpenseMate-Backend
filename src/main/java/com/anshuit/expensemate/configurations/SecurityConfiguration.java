@@ -25,6 +25,11 @@ import jakarta.servlet.http.HttpServletRequest;
 @EnableWebSecurity(debug = true)
 public class SecurityConfiguration {
 
+	private static String[] PUBLIC_URLS = { "/error", "/test/**", GlobalConstants.LOGIN_URL,
+			GlobalConstants.REGISTER_URL, GlobalConstants.CHECK_TOKEN_VALIDITY_URL,
+			GlobalConstants.CHECK_REFRESH_TOKEN_VALIDITY_URL, GlobalConstants.REFRESH_TOKEN_BY_USER_ID_URL,
+			GlobalConstants.DELETE_REFRESH_TOKEN_BY_TOKEN_STRING_IN_REQUEST_BODY_URL };
+
 	@Autowired
 	private JWTCustomTokenValidatorFilter jwtCustomTokenValidatorFilter;
 
@@ -44,14 +49,13 @@ public class SecurityConfiguration {
 
 	@Bean
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests((requests) -> requests
-				.requestMatchers("/error", "/test/**", GlobalConstants.LOGIN_URL, GlobalConstants.REGISTER_URL)
-				.permitAll().anyRequest().authenticated());
+		http.authorizeHttpRequests(
+				(requests) -> requests.requestMatchers(PUBLIC_URLS).permitAll().anyRequest().authenticated());
 		http.sessionManagement(sessionManagementCustomizer -> sessionManagementCustomizer
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.addFilterBefore(jwtCustomTokenValidatorFilter, UsernamePasswordAuthenticationFilter.class);
 		http.exceptionHandling(ehc -> ehc.authenticationEntryPoint(jwtCustomAuthenticationEntryPoint));
-		http.cors(corsCustomizer-> corsCustomizer.configurationSource(createCorsConfigurationSource()));
+		http.cors(corsCustomizer -> corsCustomizer.configurationSource(createCorsConfigurationSource()));
 		http.csrf(csrfCustomizer -> csrfCustomizer.disable());
 		http.formLogin(formLoginCustomizer -> formLoginCustomizer.disable());
 		http.httpBasic(httpBasicCustomizer -> httpBasicCustomizer.disable());
