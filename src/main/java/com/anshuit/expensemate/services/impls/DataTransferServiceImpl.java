@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.anshuit.expensemate.dtos.AppUserDto;
-import com.anshuit.expensemate.dtos.ExpenseDto;
+import com.anshuit.expensemate.dtos.TransactionDto;
 import com.anshuit.expensemate.entities.AppUser;
-import com.anshuit.expensemate.entities.Expense;
+import com.anshuit.expensemate.entities.Transaction;
 
 @Service
 public class DataTransferServiceImpl {
@@ -23,11 +23,11 @@ public class DataTransferServiceImpl {
 		return modelMapper.map(appUserDto, AppUser.class);
 	}
 
-	public ExpenseDto mapExpenseToExpenseDto(Expense expense) {
-		return modelMapper.map(expense, ExpenseDto.class);
+	public TransactionDto mapTransactionToTransactionDto(Transaction expense) {
+		return modelMapper.map(expense, TransactionDto.class);
 	}
 
-	public Expense mapExpenseDtoToExpense(ExpenseDto expenseDto) {
-		return modelMapper.map(expenseDto, Expense.class);
+	public Transaction mapTransactionDtoToTransaction(TransactionDto expenseDto) {
+		return modelMapper.map(expenseDto, Transaction.class);
 	}
 }

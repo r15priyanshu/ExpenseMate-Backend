@@ -8,4 +8,6 @@ import lombok.Setter;
 public class CategoryDto {
 	private String categoryId;
 	private String categoryName;
+	private String categoryType;
+	private String categoryOwner;
 }

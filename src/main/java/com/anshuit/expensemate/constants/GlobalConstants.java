@@ -21,7 +21,11 @@ public class GlobalConstants {
 	public static final String DEFAULT_USER_ONE_ID = "1";
 	public static final String DEFAULT_USER_TWO_ID = "2";
 
-	public static final String DEFAULT_CATEGORY_ONE = "GROCERIES";
+	public static final String CATEGORY_TYPE_DEBIT = "DEBIT";
+	public static final String CATEGORY_TYPE_CREDIT = "CREDIT";
+	public static final String CATEGORY_OWNER_SYSTEM = "SYSTEM";
+	
+	public static final String DEFAULT_CATEGORY_ONE = "SALARY";
 	public static final String DEFAULT_CATEGORY_ONE_ID = "1";
 	public static final String DEFAULT_CATEGORY_TWO = "SHOPPING";
 	public static final String DEFAULT_CATEGORY_TWO_ID = "2";

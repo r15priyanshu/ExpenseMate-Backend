@@ -1,7 +1,5 @@
 package com.anshuit.expensemate;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -10,11 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.anshuit.expensemate.constants.GlobalConstants;
 import com.anshuit.expensemate.entities.AppUser;
-import com.anshuit.expensemate.entities.CustomExpenseCategory;
-import com.anshuit.expensemate.entities.DefaultExpenseCategory;
+import com.anshuit.expensemate.entities.Category;
 import com.anshuit.expensemate.entities.Role;
-import com.anshuit.expensemate.services.impls.CustomExpenseCategoryServiceImpl;
-import com.anshuit.expensemate.services.impls.DefaultExpenseCategoryServiceImpl;
+import com.anshuit.expensemate.services.impls.CategoryServiceImpl;
 import com.anshuit.expensemate.services.impls.RoleServiceImpl;
 import com.anshuit.expensemate.services.impls.UserServiceImpl;
 
@@ -28,10 +24,7 @@ public class ExpenseMateApplication implements ApplicationRunner {
 	private RoleServiceImpl roleService;
 
 	@Autowired
-	private DefaultExpenseCategoryServiceImpl defaultExpenseCategoryService;
-
-	@Autowired
-	private CustomExpenseCategoryServiceImpl customExpenseCategoryService;
+	private CategoryServiceImpl categoryService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ExpenseMateApplication.class, args);
@@ -47,42 +40,8 @@ public class ExpenseMateApplication implements ApplicationRunner {
 		roleService.getRoleByIdOptional(roleId2)
 				.orElseGet(() -> roleService.saveOrUpdateRole(new Role(roleId2, GlobalConstants.DEFAULT_ROLE_TWO)));
 
-		// CREATING 2 DEFAULT CATEGORIES FOR THIS APPLICATION
-		String defaultCategoryId1 = GlobalConstants.DEFAULT_CATEGORY_ONE_ID;
-		defaultExpenseCategoryService.getDefaultExpenseCategoryByIdOptional(defaultCategoryId1).orElseGet(() -> {
-			DefaultExpenseCategory category = new DefaultExpenseCategory();
-			category.setCategoryId(defaultCategoryId1);
-			category.setCategoryName(GlobalConstants.DEFAULT_CATEGORY_ONE);
-			return defaultExpenseCategoryService.saveOrUpdateDefaultExpenseCategory(category);
-		});
-		String defaultCategoryId2 = GlobalConstants.DEFAULT_CATEGORY_TWO_ID;
-		defaultExpenseCategoryService.getDefaultExpenseCategoryByIdOptional(defaultCategoryId2).orElseGet(() -> {
-			DefaultExpenseCategory category = new DefaultExpenseCategory();
-			category.setCategoryId(defaultCategoryId2);
-			category.setCategoryName(GlobalConstants.DEFAULT_CATEGORY_TWO);
-			return defaultExpenseCategoryService.saveOrUpdateDefaultExpenseCategory(category);
-		});
-
-		// CREATING 2 CUSTOM CATEGORIES FOR SOME USERS
-		String customCategoryId1 = GlobalConstants.CUSTOM_CATEGORY_ONE_ID;
-		CustomExpenseCategory customExpenseCategory1 = customExpenseCategoryService
-				.getCustomExpenseCategoryByIdOptional(customCategoryId1).orElseGet(() -> {
-					CustomExpenseCategory category = new CustomExpenseCategory();
-					category.setCategoryId(customCategoryId1);
-					category.setCategoryName(GlobalConstants.CUSTOM_CATEGORY_ONE);
-					return customExpenseCategoryService.saveOrUpdateCustomExpenseCategory(category);
-				});
-		String customCategoryId2 = GlobalConstants.CUSTOM_CATEGORY_TWO_ID;
-		CustomExpenseCategory customExpenseCategory2 = customExpenseCategoryService
-				.getCustomExpenseCategoryByIdOptional(customCategoryId2).orElseGet(() -> {
-					CustomExpenseCategory category = new CustomExpenseCategory();
-					category.setCategoryId(customCategoryId2);
-					category.setCategoryName(GlobalConstants.CUSTOM_CATEGORY_TWO);
-					return customExpenseCategoryService.saveOrUpdateCustomExpenseCategory(category);
-				});
-
 		// CREATING 2 DEFAULT EMPLOYEES FOR THIS APPLICATION
-		userService.getUserByEmailOptional("anshu@gmail.com").orElseGet(() -> {
+		AppUser appUser1 = userService.getUserByEmailOptional("anshu@gmail.com").orElseGet(() -> {
 			AppUser user1 = new AppUser();
 			user1.setUserId(GlobalConstants.DEFAULT_USER_ONE_ID);
 			user1.setFirstName("Anshu");
@@ -90,12 +49,10 @@ public class ExpenseMateApplication implements ApplicationRunner {
 			user1.setEmail("anshu@gmail.com");
 			user1.setPassword("12345");
 			AppUser savedUser1 = userService.createUser(user1, GlobalConstants.DEFAULT_ROLE_ONE_ID);
-			savedUser1.getCustomExpenseCategories().addAll(List.of(customExpenseCategory1, customExpenseCategory2));
-			savedUser1 = userService.saveOrUpdateUser(savedUser1);
 			return savedUser1;
 		});
 
-		userService.getUserByEmailOptional("shalu@gmail.com").orElseGet(() -> {
+		AppUser appUser2 = userService.getUserByEmailOptional("shalu@gmail.com").orElseGet(() -> {
 			AppUser user2 = new AppUser();
 			user2.setUserId(GlobalConstants.DEFAULT_USER_TWO_ID);
 			user2.setFirstName("Shalu");
@@ -104,6 +61,48 @@ public class ExpenseMateApplication implements ApplicationRunner {
 			user2.setPassword("12345");
 			AppUser savedUser2 = userService.createUser(user2, GlobalConstants.DEFAULT_ROLE_TWO_ID);
 			return savedUser2;
+		});
+
+		// CREATING 2 SYSTEM DEFAULT CATEGORIES FOR THIS APPLICATION
+		String defaultCategoryId1 = GlobalConstants.DEFAULT_CATEGORY_ONE_ID;
+		categoryService.getCategoryByIdOptional(defaultCategoryId1).orElseGet(() -> {
+			Category category = new Category();
+			category.setCategoryId(defaultCategoryId1);
+			category.setCategoryName(GlobalConstants.DEFAULT_CATEGORY_ONE);
+			category.setCategoryType(GlobalConstants.CATEGORY_TYPE_CREDIT);
+			category.setCategoryOwner(GlobalConstants.CATEGORY_OWNER_SYSTEM);
+			return categoryService.saveOrUpdateCategory(category);
+		});
+
+		String defaultCategoryId2 = GlobalConstants.DEFAULT_CATEGORY_TWO_ID;
+		categoryService.getCategoryByIdOptional(defaultCategoryId2).orElseGet(() -> {
+			Category category = new Category();
+			category.setCategoryId(defaultCategoryId2);
+			category.setCategoryName(GlobalConstants.DEFAULT_CATEGORY_TWO);
+			category.setCategoryType(GlobalConstants.CATEGORY_TYPE_DEBIT);
+			category.setCategoryOwner(GlobalConstants.CATEGORY_OWNER_SYSTEM);
+			return categoryService.saveOrUpdateCategory(category);
+		});
+
+		// CREATING 2 CUSTOM CATEGORIES BY SOME USERS
+		String customCategoryId1 = GlobalConstants.CUSTOM_CATEGORY_ONE_ID;
+		categoryService.getCategoryByIdOptional(customCategoryId1).orElseGet(() -> {
+			Category category = new Category();
+			category.setCategoryId(customCategoryId1);
+			category.setCategoryName(GlobalConstants.CUSTOM_CATEGORY_ONE);
+			category.setCategoryType(GlobalConstants.CATEGORY_TYPE_DEBIT);
+			category.setCategoryOwner(appUser1.getUserId());
+			return categoryService.saveOrUpdateCategory(category);
+		});
+
+		String customCategoryId2 = GlobalConstants.CUSTOM_CATEGORY_TWO_ID;
+		categoryService.getCategoryByIdOptional(customCategoryId2).orElseGet(() -> {
+			Category category = new Category();
+			category.setCategoryId(customCategoryId2);
+			category.setCategoryName(GlobalConstants.CUSTOM_CATEGORY_TWO);
+			category.setCategoryType(GlobalConstants.CATEGORY_TYPE_DEBIT);
+			category.setCategoryOwner(appUser2.getUserId());
+			return categoryService.saveOrUpdateCategory(category);
 		});
 
 	}

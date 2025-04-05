@@ -18,6 +18,5 @@ public class AppUserDto {
 	private String profilePic;
 	//private String profilePicData;
 	private RoleDto role;
-	private List<CategoryDto> customExpenseCategories;
-	private List<ExpenseDto> expenses;
+	private List<TransactionDto> transactions;
 }

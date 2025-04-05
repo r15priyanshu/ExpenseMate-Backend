@@ -10,19 +10,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Document(collection = "expenses")
+@Document(collection = "transactions")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Expense {
+public class Transaction {
 	@Id
-	private String expenseId;
-	private double expenseAmount;
-	private LocalDate expenseDate;
-	private String expenseDescription;
-
+	private String transactionId;
+	private double transactionAmount;
+	private LocalDate transactionDate;
+	private String transactionDescription;
+	private String transactionType;
 	@DBRef
 	private Category category;
-	
-    private String userId;
+	private String userId;
 }

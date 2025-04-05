@@ -38,11 +38,8 @@ public class AppUser implements UserDetails {
 	@DBRef
 	private Role role;
 
-	@DBRef
-	private List<Category> customExpenseCategories = new ArrayList<>();
-
 	@DBRef(lazy = true)
-	private List<Expense> expenses = new ArrayList<>();
+	private List<Transaction> transactions = new ArrayList<>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

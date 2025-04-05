@@ -48,8 +48,7 @@ public class UserServiceImpl {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setProfilePic(GlobalConstants.DEFAULT_PROFILE_PIC_FILE_NAME);
 		user.setRole(roleService.getRoleById(roleId));
-		user.setCustomExpenseCategories(new ArrayList<>());
-		user.setExpenses(new ArrayList<>());
+		user.setTransactions(new ArrayList<>());
 		return this.saveOrUpdateUser(user);
 	}
 
