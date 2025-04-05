@@ -11,6 +11,8 @@ public class GlobalConstants {
 	public static final String DEFAULT_FRONTEND_APPLICATION_NAME = "ExpenseMate Frontend";
 	public static final String DEFAULT_FRONTEND_ORIGIN_URL = "http://localhost:4200";
 
+	public static final String DEFAULT_PROFILE_PIC_FILE_NAME = "default.png";
+
 	public static final String DEFAULT_ROLE_ONE = "ROLE_NORMAL";
 	public static final String DEFAULT_ROLE_ONE_ID = "1";
 	public static final String DEFAULT_ROLE_TWO = "ROLE_ADMIN";
@@ -28,10 +30,10 @@ public class GlobalConstants {
 	public static final String CUSTOM_CATEGORY_TWO = "INVESTMENT";
 	public static final String CUSTOM_CATEGORY_TWO_ID = "4";
 
-	public static final String JWT_DEFAULT_SECRET = "!!CUSTOM-SECRET-MUST-BE-VERY-LONG-SO-THAT-IT-CANNOT-BE-GUESSED EASILY!!";
+	public static final String JWT_DEFAULT_SECRET = "!!MY-CUSTOM-SECRET-KEY-FOR-JWT!!";
 	public static final String JWT_TOKEN_RESPONSE_HEADER_KEY = "JWT-TOKEN";
 	public static final String JWT_REFRESH_TOKEN_RESPONSE_HEADER_KEY = "JWT-REFRESH-TOKEN";
-	public static final long JWT_TOKEN_VALIDITY_IN_MILLISECONDS = 1 * 30 * 1000; // HR,MIN,SEC,MILLI
+	public static final long JWT_TOKEN_VALIDITY_IN_MILLISECONDS = 1 * 60 * 60 * 1000; // HR,MIN,SEC,MILLI
 	public static final long JWT_REFRESH_TOKEN_VALIDITY_IN_MILLISECONDS = 1 * 60 * 1000; // HR,MIN,SEC,MILLI
 
 	public static final String LOGIN_URL = "/auth/login";
@@ -45,6 +47,16 @@ public class GlobalConstants {
 	public static final List<String> ALLOWED_HEADERS_LIST = List.of("*");
 	public static final List<String> ALLOWED_METHODS_LIST = List.of("GET", "PUT", "POST", "DELETE", "OPTIONS");
 	public static final List<String> EXPOSED_HEADERS_LIST = List.of("*");
+
+	public static final String EXTENSION_JPG = ".jpg";
+	public static final String EXTENSION_JPEG = ".jpeg";
+	public static final String EXTENSION_PNG = ".png";
+	public static final String EXTENSION_GIF = ".gif";
+	public static final List<String> ALLOWED_PROFILE_PICTURE_IMAGE_EXTENSIONS_LIST = List.of(EXTENSION_JPG,
+			EXTENSION_JPEG, EXTENSION_PNG, EXTENSION_GIF);
+	
+	//KEY TO BE USED IN API-RESPONSE-DTO
+	public static final String SINGLE_USER_DATA_KEY = "user";
 
 	// SET OF URLS FOR WHICH JWT TOKEN VALIDATOR FILTER SHOULD NOT RUN
 	public static final Set<String> EXCLUDED_PATHS_FOR_JWT_TOKEN_VALIDATOR_FILTER_SET = Set.of(

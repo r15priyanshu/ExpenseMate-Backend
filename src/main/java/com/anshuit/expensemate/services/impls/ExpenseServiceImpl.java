@@ -1,5 +1,6 @@
 package com.anshuit.expensemate.services.impls;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,10 @@ public class ExpenseServiceImpl {
 
 	public Optional<Expense> getExpenseByExpenseIdOptional(String expenseId) {
 		return expenseRepository.findById(expenseId);
+	}
+
+	public List<Expense> getAllExpensesOfUserByUserId(String userId) {
+		return expenseRepository.findByUserId(userId);
 	}
 
 	public Expense getExpenseByExpenseId(String expenseId) {

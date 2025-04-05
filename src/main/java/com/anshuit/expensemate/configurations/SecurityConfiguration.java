@@ -25,7 +25,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @EnableWebSecurity(debug = true)
 public class SecurityConfiguration {
 
-	private static String[] PUBLIC_URLS = { "/error", "/test/**", GlobalConstants.LOGIN_URL,
+	private static String[] PUBLIC_URLS = { "/error", "/test/**", "/public/**", GlobalConstants.LOGIN_URL,
 			GlobalConstants.REGISTER_URL, GlobalConstants.CHECK_TOKEN_VALIDITY_URL,
 			GlobalConstants.CHECK_REFRESH_TOKEN_VALIDITY_URL, GlobalConstants.REFRESH_TOKEN_BY_USER_ID_URL,
 			GlobalConstants.DELETE_REFRESH_TOKEN_BY_TOKEN_STRING_IN_REQUEST_BODY_URL };

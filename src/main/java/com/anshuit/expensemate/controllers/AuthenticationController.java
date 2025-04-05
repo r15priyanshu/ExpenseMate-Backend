@@ -68,11 +68,11 @@ public class AuthenticationController {
 			SecurityContextHolder.getContext().setAuthentication(authenticatedToken);
 		} catch (Exception e) {
 			if (e instanceof UsernameNotFoundException) {
-				throw new CustomException(e.getMessage(), HttpStatus.NOT_FOUND);
+				throw new CustomException(HttpStatus.NOT_FOUND, e.getMessage());
 			} else if (e instanceof BadCredentialsException) {
-				throw new CustomException(e.getMessage(), HttpStatus.BAD_REQUEST);
+				throw new CustomException(HttpStatus.BAD_REQUEST, e.getMessage());
 			} else {
-				throw new CustomException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+				throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 			}
 		}
 

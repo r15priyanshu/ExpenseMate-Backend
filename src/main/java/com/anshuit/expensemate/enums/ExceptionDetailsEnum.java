@@ -2,16 +2,18 @@ package com.anshuit.expensemate.enums;
 
 import java.util.Objects;
 
+import com.anshuit.expensemate.constants.GlobalConstants;
+
 public enum ExceptionDetailsEnum {
 
 	// User Related Constants
-	USER_NOT_FOUND_WITH_ID("1001", "User not found with id : %s"),
+	USER_NOT_FOUND_WITH_ID("1001", "User Not Found With UserId : %s"),
 
-	USER_NOT_FOUND_WITH_EMAIL("1002", "User not found with email : %s"),
+	USER_NOT_FOUND_WITH_EMAIL("1002", "User Not Found With Email : %s"),
 
-	USER_ALREADY_EXIST_WITH_EMAIL("1003", "User already exist with email : %s"),
+	USER_ALREADY_EXIST_WITH_EMAIL("1003", "User Already Exist With Email : %s"),
 
-	USER_PASSWORD_DID_NOT_MATCH("1004", "Invalid Password !! Password did not match !!"),
+	USER_PASSWORD_DID_NOT_MATCH("1004", "Invalid Password !! Password Did Not Match !!"),
 
 	// Role Related Constants
 	ROLE_NOT_FOUND_WITH_ID("1051", "Role not found with roleId : %s"),
@@ -41,7 +43,14 @@ public enum ExceptionDetailsEnum {
 
 	REFRESH_TOKEN_EXPIRED_WITH_PERFORM_RE_LOGIN_MSG("3006", "Refresh Token Already Expired !! Please Re-Login !!"),
 	
-	REFRESH_TOKEN_DOES_NOT_BELONG_TO_USER_WITH_ID("4007", "Refresh Token Does Not Belong To User With Id : %s !!");
+	REFRESH_TOKEN_DOES_NOT_BELONG_TO_USER_WITH_ID("4007", "Refresh Token Does Not Belong To User With Id : %s !!"),
+	
+	// Other Constants
+	PROFILE_PICTURE_NOT_PRESENT("5001", "Profile Picture Not Present !!"),
+
+	ERROR_IN_UPDATING_PROFILE_PICTURE("5002", "Error In Uploading Profile Picture !!"),
+
+	NOT_AN_ALLOWED_IMAGE_EXTENSION("5003", "Not An Allowed Image Extension !! Allowed Extensions Are : " + GlobalConstants.ALLOWED_PROFILE_PICTURE_IMAGE_EXTENSIONS_LIST),;
 
 	private final String exceptionCode;
 	private final String exceptionMessage;

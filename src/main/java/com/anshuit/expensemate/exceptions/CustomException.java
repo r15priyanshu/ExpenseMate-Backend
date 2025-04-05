@@ -17,7 +17,7 @@ public class CustomException extends RuntimeException {
 	private ExceptionDetailsEnum exceptionDetailsEnum;
 	private HttpStatus status;
 
-	public CustomException(String message, HttpStatus status) {
+	public CustomException(HttpStatus status, String message) {
 		super(message);
 		this.status = status;
 	}

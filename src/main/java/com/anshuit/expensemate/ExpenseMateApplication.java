@@ -89,8 +89,9 @@ public class ExpenseMateApplication implements ApplicationRunner {
 			user1.setLastName("Anand");
 			user1.setEmail("anshu@gmail.com");
 			user1.setPassword("12345");
-			user1.getCustomExpenseCategories().addAll(List.of(customExpenseCategory1, customExpenseCategory2));
 			AppUser savedUser1 = userService.createUser(user1, GlobalConstants.DEFAULT_ROLE_ONE_ID);
+			savedUser1.getCustomExpenseCategories().addAll(List.of(customExpenseCategory1, customExpenseCategory2));
+			savedUser1 = userService.saveOrUpdateUser(savedUser1);
 			return savedUser1;
 		});
 

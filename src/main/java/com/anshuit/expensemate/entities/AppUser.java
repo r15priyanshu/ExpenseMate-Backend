@@ -20,10 +20,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AppUser implements UserDetails{
-	
+public class AppUser implements UserDetails {
+
 	private static final long serialVersionUID = -3173463497851204487L;
-	
+
 	@Id
 	private String userId;
 	private String firstName;
@@ -32,6 +32,8 @@ public class AppUser implements UserDetails{
 	@Indexed(unique = true)
 	private String email;
 	private String password;
+	private String profilePic;
+	private byte[] profilePicData;
 
 	@DBRef
 	private Role role;

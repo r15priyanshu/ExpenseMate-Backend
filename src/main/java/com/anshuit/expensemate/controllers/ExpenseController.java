@@ -1,5 +1,7 @@
 package com.anshuit.expensemate.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,5 +39,13 @@ public class ExpenseController {
 		Expense expense = expenseService.getExpenseByExpenseId(expenseId);
 		ExpenseDto expenseDto = dataTransferService.mapExpenseToExpenseDto(expense);
 		return new ResponseEntity<>(expenseDto, HttpStatus.OK);
+	}
+
+	@GetMapping("/expenses/users/{userId}")
+	public ResponseEntity<List<ExpenseDto>> getAllExpensesOfUserByUserId(@PathVariable("userId") String userId) {
+		List<Expense> allExpenses = expenseService.getAllExpensesOfUserByUserId(userId);
+		List<ExpenseDto> allExpensesDto = allExpenses.stream()
+				.map(expense -> dataTransferService.mapExpenseToExpenseDto(expense)).toList();
+		return new ResponseEntity<>(allExpensesDto, HttpStatus.OK);
 	}
 }
