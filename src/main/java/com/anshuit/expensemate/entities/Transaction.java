@@ -1,6 +1,6 @@
 package com.anshuit.expensemate.entities;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -18,7 +18,7 @@ public class Transaction {
 	@Id
 	private String transactionId;
 	private double transactionAmount;
-	private LocalDate transactionDate;
+	private LocalDateTime transactionDate;
 	private String transactionDescription;
 	private String transactionType;
 	@DBRef

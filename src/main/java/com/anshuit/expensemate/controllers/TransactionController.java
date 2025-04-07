@@ -50,4 +50,14 @@ public class TransactionController {
 				.map(transaction -> dataTransferService.mapTransactionToTransactionDto(transaction)).toList();
 		return new ResponseEntity<>(allTransactionsDto, HttpStatus.OK);
 	}
+
+	@GetMapping("/transactions/users/{userId}/year/{year}/month/{month}")
+	public ResponseEntity<List<TransactionDto>> getSpecificMonthTransactionsOfUserByUserId(
+			@PathVariable("userId") String userId, @PathVariable("year") int year, @PathVariable("month") int month) {
+		List<Transaction> allTransactions = transactionService.getSpecificMonthTransactionsOfUserByUserIdInRange(userId, year,
+				month);
+		List<TransactionDto> allTransactionsDto = allTransactions.stream()
+				.map(transaction -> dataTransferService.mapTransactionToTransactionDto(transaction)).toList();
+		return new ResponseEntity<>(allTransactionsDto, HttpStatus.OK);
+	}
 }

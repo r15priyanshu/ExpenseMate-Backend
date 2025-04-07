@@ -1,9 +1,13 @@
 package com.anshuit.expensemate.services.impls;
 
+import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -42,6 +46,7 @@ public class TransactionServiceImpl {
 		AppUser user = userService.getUserByUserId(userId, fetchPartial);
 		Category category = categoryService.getCategoryById(categoryId);
 
+		transaction.setTransactionDate(LocalDateTime.now());
 		transaction.setTransactionType(category.getCategoryType());
 		transaction.setCategory(category);
 		transaction.setUserId(user.getUserId());
@@ -62,9 +67,18 @@ public class TransactionServiceImpl {
 		return transactionRepository.findByUserId(userId);
 	}
 
+	public List<Transaction> getSpecificMonthTransactionsOfUserByUserIdInRange(String userId, int year, int month) {
+		Sort sort = Sort.by(Direction.DESC, "transactionDate");
+		YearMonth yearMonth = YearMonth.of(year, month);
+		LocalDateTime start = yearMonth.atDay(1).atStartOfDay();
+		LocalDateTime end = yearMonth.plusMonths(1).atDay(1).atStartOfDay();
+		return transactionRepository.findTransactionsInRange(userId, start, end, sort);
+	}
+
 	public Transaction getTransactionByTransactionId(String transactionId) {
 		return this.getTransactionByTransactionIdOptional(transactionId).orElseThrow(() -> {
-			throw new CustomException(HttpStatus.NOT_FOUND, ExceptionDetailsEnum.TRANSACTION_NOT_FOUND_WITH_ID, transactionId);
+			throw new CustomException(HttpStatus.NOT_FOUND, ExceptionDetailsEnum.TRANSACTION_NOT_FOUND_WITH_ID,
+					transactionId);
 		});
 	}
 }

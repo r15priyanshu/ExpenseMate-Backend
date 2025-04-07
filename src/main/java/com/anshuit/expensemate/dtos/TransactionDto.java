@@ -1,6 +1,6 @@
 package com.anshuit.expensemate.dtos;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.anshuit.expensemate.entities.Category;
 
@@ -14,7 +14,7 @@ import lombok.Setter;
 public class TransactionDto {
 	private String transactionId;
 	private double transactionAmount;
-	private LocalDate transactionDate;
+	private LocalDateTime transactionDate;
 	private String transactionDescription;
 	private String transactionType;
 	private Category category;
