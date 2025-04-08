@@ -23,6 +23,9 @@ public enum ExceptionDetailsEnum {
 
 	// Category Related Constants
 	CATEGORY_NOT_FOUND_WITH_ID("1150", "Category Not Found With CategoryId : %s"),
+	
+	// Books Related Constants
+	BOOK_NOT_FOUND_WITH_ID("2001", "Book Not Found With BookId : %s"),
 
 	// JWT Related Constants
 	JWT_MALFORMED_EXCEPTION_MESSAGE("3001", "Token Malformed !! Token Might Have Been Tampered !!"),

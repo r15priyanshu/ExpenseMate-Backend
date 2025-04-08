@@ -1,5 +1,7 @@
 package com.anshuit.expensemate;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -8,8 +10,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.anshuit.expensemate.constants.GlobalConstants;
 import com.anshuit.expensemate.entities.AppUser;
+import com.anshuit.expensemate.entities.Book;
 import com.anshuit.expensemate.entities.Category;
 import com.anshuit.expensemate.entities.Role;
+import com.anshuit.expensemate.services.impls.BookServiceImpl;
 import com.anshuit.expensemate.services.impls.CategoryServiceImpl;
 import com.anshuit.expensemate.services.impls.RoleServiceImpl;
 import com.anshuit.expensemate.services.impls.UserServiceImpl;
@@ -25,6 +29,9 @@ public class ExpenseMateApplication implements ApplicationRunner {
 
 	@Autowired
 	private CategoryServiceImpl categoryService;
+
+	@Autowired
+	private BookServiceImpl bookService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ExpenseMateApplication.class, args);
@@ -71,6 +78,7 @@ public class ExpenseMateApplication implements ApplicationRunner {
 			category.setCategoryName(GlobalConstants.DEFAULT_CATEGORY_ONE);
 			category.setCategoryType(GlobalConstants.CATEGORY_TYPE_CREDIT);
 			category.setCategoryOwner(GlobalConstants.CATEGORY_OWNER_SYSTEM);
+			category.setCreatedAt(LocalDateTime.now());
 			return categoryService.saveOrUpdateCategory(category);
 		});
 
@@ -81,6 +89,7 @@ public class ExpenseMateApplication implements ApplicationRunner {
 			category.setCategoryName(GlobalConstants.DEFAULT_CATEGORY_TWO);
 			category.setCategoryType(GlobalConstants.CATEGORY_TYPE_DEBIT);
 			category.setCategoryOwner(GlobalConstants.CATEGORY_OWNER_SYSTEM);
+			category.setCreatedAt(LocalDateTime.now());
 			return categoryService.saveOrUpdateCategory(category);
 		});
 
@@ -92,6 +101,7 @@ public class ExpenseMateApplication implements ApplicationRunner {
 			category.setCategoryName(GlobalConstants.CUSTOM_CATEGORY_ONE);
 			category.setCategoryType(GlobalConstants.CATEGORY_TYPE_DEBIT);
 			category.setCategoryOwner(appUser1.getUserId());
+			category.setCreatedAt(LocalDateTime.now());
 			return categoryService.saveOrUpdateCategory(category);
 		});
 
@@ -102,7 +112,27 @@ public class ExpenseMateApplication implements ApplicationRunner {
 			category.setCategoryName(GlobalConstants.CUSTOM_CATEGORY_TWO);
 			category.setCategoryType(GlobalConstants.CATEGORY_TYPE_DEBIT);
 			category.setCategoryOwner(appUser2.getUserId());
+			category.setCreatedAt(LocalDateTime.now());
 			return categoryService.saveOrUpdateCategory(category);
+		});
+
+		// CREATING 2 CUSTOM BOOKS FOR SOME USERS
+		String customBookId1 = GlobalConstants.CUSTOM_BOOK_ONE_ID;
+		bookService.getBookByIdOptional(customBookId1).orElseGet(() -> {
+			Book book = new Book();
+			book.setBookId(customBookId1);
+			book.setBookName(GlobalConstants.CUSTOM_BOOK_ONE);
+			book.setBookDescription("THIS BOOK IS CREATED FOR TESTING PURPOSE.");
+			return bookService.createBookForSpecificUser(appUser1.getUserId(), book);
+		});
+
+		String customBookId2 = GlobalConstants.CUSTOM_BOOK_TWO_ID;
+		bookService.getBookByIdOptional(customBookId2).orElseGet(() -> {
+			Book book = new Book();
+			book.setBookId(customBookId2);
+			book.setBookName(GlobalConstants.CUSTOM_BOOK_TWO);
+			book.setBookDescription("THIS BOOK IS CREATED FOR TESTING PURPOSE.");
+			return bookService.createBookForSpecificUser(appUser1.getUserId(), book);
 		});
 
 	}

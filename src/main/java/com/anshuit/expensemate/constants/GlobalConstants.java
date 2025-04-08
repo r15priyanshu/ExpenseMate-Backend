@@ -33,6 +33,10 @@ public class GlobalConstants {
 	public static final String CUSTOM_CATEGORY_ONE_ID = "3";
 	public static final String CUSTOM_CATEGORY_TWO = "INVESTMENT";
 	public static final String CUSTOM_CATEGORY_TWO_ID = "4";
+	public static final String CUSTOM_BOOK_ONE = "BOOK1";
+	public static final String CUSTOM_BOOK_ONE_ID = "1";
+	public static final String CUSTOM_BOOK_TWO = "BOOK2";
+	public static final String CUSTOM_BOOK_TWO_ID = "2";
 
 	public static final String JWT_DEFAULT_SECRET = "!!MY-CUSTOM-SECRET-KEY-FOR-JWT!!";
 	public static final String JWT_TOKEN_RESPONSE_HEADER_KEY = "JWT-TOKEN";

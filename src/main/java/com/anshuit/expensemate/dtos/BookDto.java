@@ -7,10 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CategoryDto {
-	private String categoryId;
-	private String categoryName;
-	private String categoryType;
-	private String categoryOwner;
+public class BookDto {
+	private String bookId;
+	private String bookName;
+	private String bookDescription;
+	private String bookOwner;
 	private LocalDateTime createdAt;
 }

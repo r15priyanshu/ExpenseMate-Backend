@@ -1,6 +1,8 @@
 package com.anshuit.expensemate.controllers;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.anshuit.expensemate.constants.GlobalConstants;
 import com.anshuit.expensemate.dtos.TransactionDto;
+import com.anshuit.expensemate.dtos.TransactionsDetailsResponseDto;
 import com.anshuit.expensemate.entities.Transaction;
 import com.anshuit.expensemate.services.impls.DataTransferServiceImpl;
 import com.anshuit.expensemate.services.impls.TransactionServiceImpl;
@@ -52,12 +56,24 @@ public class TransactionController {
 	}
 
 	@GetMapping("/transactions/users/{userId}/year/{year}/month/{month}")
-	public ResponseEntity<List<TransactionDto>> getSpecificMonthTransactionsOfUserByUserId(
+	public ResponseEntity<TransactionsDetailsResponseDto> getSpecificMonthTransactionsOfUserByUserId(
 			@PathVariable("userId") String userId, @PathVariable("year") int year, @PathVariable("month") int month) {
-		List<Transaction> allTransactions = transactionService.getSpecificMonthTransactionsOfUserByUserIdInRange(userId, year,
-				month);
+		List<Transaction> allTransactions = transactionService.getSpecificMonthTransactionsOfUserByUserIdInRange(userId,
+				year, month);
 		List<TransactionDto> allTransactionsDto = allTransactions.stream()
 				.map(transaction -> dataTransferService.mapTransactionToTransactionDto(transaction)).toList();
-		return new ResponseEntity<>(allTransactionsDto, HttpStatus.OK);
+		
+		Map<String, Double> transactionsValue = allTransactionsDto.stream().collect(Collectors.groupingBy(TransactionDto::getTransactionType,Collectors.summingDouble(TransactionDto::getTransactionAmount)));
+		Double totalCredit = transactionsValue.getOrDefault(GlobalConstants.CATEGORY_TYPE_CREDIT,0.0);
+		Double totalDebit = transactionsValue.getOrDefault(GlobalConstants.CATEGORY_TYPE_DEBIT,0.0);
+		Double total = totalCredit - totalDebit;
+		
+		TransactionsDetailsResponseDto transactionsDetailsResponseDto = new TransactionsDetailsResponseDto();
+		transactionsDetailsResponseDto.setTotalTransactionsCount(allTransactionsDto.size());
+		transactionsDetailsResponseDto.setTotalCredit(totalCredit);
+		transactionsDetailsResponseDto.setTotalDebit(totalDebit);
+		transactionsDetailsResponseDto.setTotal(total);
+		transactionsDetailsResponseDto.setTransactions(allTransactionsDto);
+		return new ResponseEntity<>(transactionsDetailsResponseDto, HttpStatus.OK);
 	}
 }

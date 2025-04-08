@@ -41,6 +41,9 @@ public class AppUser implements UserDetails {
 	@DBRef(lazy = true)
 	private List<Transaction> transactions = new ArrayList<>();
 
+	@DBRef
+	private List<Book> books = new ArrayList<>();
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return List.of(new SimpleGrantedAuthority(this.role.getRoleName()));
