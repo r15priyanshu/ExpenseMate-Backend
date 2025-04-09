@@ -2,8 +2,6 @@ package com.anshuit.expensemate.dtos;
 
 import java.time.LocalDateTime;
 
-import com.anshuit.expensemate.entities.Category;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +15,7 @@ public class TransactionDto {
 	private LocalDateTime transactionDate;
 	private String transactionDescription;
 	private String transactionType;
-	private Category category;
+	private CategoryDto category;
 	private String userId;
+	private String bookId;
 }

@@ -29,11 +29,12 @@ public class TransactionController {
 	@Autowired
 	private DataTransferServiceImpl dataTransferService;
 
-	@PostMapping("/transactions/users/{userId}/category/{categoryId}")
-	public ResponseEntity<TransactionDto> createTransaction(@PathVariable("userId") String userId,
-			@PathVariable("categoryId") String categoryId, @RequestBody TransactionDto transactionDto) {
+	@PostMapping("/transactions/books/{bookId}/users/{userId}/category/{categoryId}")
+	public ResponseEntity<TransactionDto> createTransaction(@PathVariable("bookId") String bookId,
+			@PathVariable("userId") String userId, @PathVariable("categoryId") String categoryId,
+			@RequestBody TransactionDto transactionDto) {
 		Transaction transaction = dataTransferService.mapTransactionDtoToTransaction(transactionDto);
-		Transaction createdTransaction = transactionService.createTransaction(userId, transaction, categoryId);
+		Transaction createdTransaction = transactionService.createTransaction(bookId, userId, transaction, categoryId);
 		TransactionDto createdTransactionDto = dataTransferService.mapTransactionToTransactionDto(createdTransaction);
 		return new ResponseEntity<>(createdTransactionDto, HttpStatus.CREATED);
 	}
@@ -46,28 +47,31 @@ public class TransactionController {
 		return new ResponseEntity<>(transactionDto, HttpStatus.OK);
 	}
 
-	@GetMapping("/transactions/users/{userId}")
-	public ResponseEntity<List<TransactionDto>> getAllTransactionsOfUserByUserId(
-			@PathVariable("userId") String userId) {
-		List<Transaction> allTransactions = transactionService.getAllTransactionsOfUserByUserId(userId);
+	@GetMapping("/transactions/books/{bookId}/users/{userId}")
+	public ResponseEntity<List<TransactionDto>> getAllTransactionsOfUserByUserIdForSpecificBook(
+			@PathVariable("bookId") String bookId, @PathVariable("userId") String userId) {
+		List<Transaction> allTransactions = transactionService.getAllTransactionsOfUserByUserIdForSpecificBook(bookId,
+				userId);
 		List<TransactionDto> allTransactionsDto = allTransactions.stream()
 				.map(transaction -> dataTransferService.mapTransactionToTransactionDto(transaction)).toList();
 		return new ResponseEntity<>(allTransactionsDto, HttpStatus.OK);
 	}
 
-	@GetMapping("/transactions/users/{userId}/year/{year}/month/{month}")
-	public ResponseEntity<TransactionsDetailsResponseDto> getSpecificMonthTransactionsOfUserByUserId(
-			@PathVariable("userId") String userId, @PathVariable("year") int year, @PathVariable("month") int month) {
-		List<Transaction> allTransactions = transactionService.getSpecificMonthTransactionsOfUserByUserIdInRange(userId,
-				year, month);
+	@GetMapping("/transactions/books/{bookId}/users/{userId}/year/{year}/month/{month}")
+	public ResponseEntity<TransactionsDetailsResponseDto> getSpecificMonthTransactionsOfUserByUserIdForSpecificBook(
+			@PathVariable("bookId") String bookId, @PathVariable("userId") String userId,
+			@PathVariable("year") int year, @PathVariable("month") int month) {
+		List<Transaction> allTransactions = transactionService
+				.getSpecificMonthTransactionsOfUserByUserIdForSpecificBookInRange(bookId, userId, year, month);
 		List<TransactionDto> allTransactionsDto = allTransactions.stream()
 				.map(transaction -> dataTransferService.mapTransactionToTransactionDto(transaction)).toList();
-		
-		Map<String, Double> transactionsValue = allTransactionsDto.stream().collect(Collectors.groupingBy(TransactionDto::getTransactionType,Collectors.summingDouble(TransactionDto::getTransactionAmount)));
-		Double totalCredit = transactionsValue.getOrDefault(GlobalConstants.CATEGORY_TYPE_CREDIT,0.0);
-		Double totalDebit = transactionsValue.getOrDefault(GlobalConstants.CATEGORY_TYPE_DEBIT,0.0);
+
+		Map<String, Double> transactionsValue = allTransactionsDto.stream().collect(Collectors.groupingBy(
+				TransactionDto::getTransactionType, Collectors.summingDouble(TransactionDto::getTransactionAmount)));
+		Double totalCredit = transactionsValue.getOrDefault(GlobalConstants.CATEGORY_TYPE_CREDIT, 0.0);
+		Double totalDebit = transactionsValue.getOrDefault(GlobalConstants.CATEGORY_TYPE_DEBIT, 0.0);
 		Double total = totalCredit - totalDebit;
-		
+
 		TransactionsDetailsResponseDto transactionsDetailsResponseDto = new TransactionsDetailsResponseDto();
 		transactionsDetailsResponseDto.setTotalTransactionsCount(allTransactionsDto.size());
 		transactionsDetailsResponseDto.setTotalCredit(totalCredit);

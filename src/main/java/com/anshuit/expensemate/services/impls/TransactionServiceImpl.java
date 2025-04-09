@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.anshuit.expensemate.entities.AppUser;
+import com.anshuit.expensemate.entities.Book;
 import com.anshuit.expensemate.entities.Category;
 import com.anshuit.expensemate.entities.Transaction;
 import com.anshuit.expensemate.enums.ExceptionDetailsEnum;
@@ -24,12 +25,14 @@ import com.anshuit.expensemate.repositories.TransactionRepository;
 
 @Service
 public class TransactionServiceImpl {
+	@Autowired
+	private TransactionRepository transactionRepository;
+
+	@Autowired
+	private BookServiceImpl bookService;
 
 	@Autowired
 	private UserServiceImpl userService;
-
-	@Autowired
-	private TransactionRepository transactionRepository;
 
 	@Autowired
 	private CategoryServiceImpl categoryService;
@@ -41,19 +44,21 @@ public class TransactionServiceImpl {
 		return transactionRepository.save(transaction);
 	}
 
-	public Transaction createTransaction(String userId, Transaction transaction, String categoryId) {
+	public Transaction createTransaction(String bookId, String userId, Transaction transaction, String categoryId) {
 		boolean fetchPartial = true;
-		AppUser user = userService.getUserByUserId(userId, fetchPartial);
-		Category category = categoryService.getCategoryById(categoryId);
+		Book foundBook = bookService.getBookById(bookId);
+		AppUser foundUser = userService.getUserByUserId(userId, fetchPartial);
+		Category foundCategory = categoryService.getCategoryById(categoryId);
 
 		transaction.setTransactionDate(LocalDateTime.now());
-		transaction.setTransactionType(category.getCategoryType());
-		transaction.setCategory(category);
-		transaction.setUserId(user.getUserId());
+		transaction.setTransactionType(foundCategory.getCategoryType());
+		transaction.setCategory(foundCategory);
+		transaction.setUserId(foundUser.getUserId());
+		transaction.setBookId(foundBook.getBookId());
 		Transaction createdTransaction = this.saveOrUpdateTransaction(transaction);
 
 		// Updating the Transaction Created In Expenses List In User As Reference Also.
-		Query query = new Query(Criteria.where("_id").is(user.getUserId()));
+		Query query = new Query(Criteria.where("_id").is(foundUser.getUserId()));
 		Update update = new Update().addToSet("transactions", createdTransaction.getTransactionId());
 		mongoTemplate.updateFirst(query, update, AppUser.class);
 		return createdTransaction;
@@ -63,16 +68,17 @@ public class TransactionServiceImpl {
 		return transactionRepository.findById(transactionId);
 	}
 
-	public List<Transaction> getAllTransactionsOfUserByUserId(String userId) {
-		return transactionRepository.findByUserId(userId);
+	public List<Transaction> getAllTransactionsOfUserByUserIdForSpecificBook(String bookId, String userId) {
+		return transactionRepository.findByBookIdAndUserId(bookId, userId);
 	}
 
-	public List<Transaction> getSpecificMonthTransactionsOfUserByUserIdInRange(String userId, int year, int month) {
+	public List<Transaction> getSpecificMonthTransactionsOfUserByUserIdForSpecificBookInRange(String bookId,
+			String userId, int year, int month) {
 		Sort sort = Sort.by(Direction.DESC, "transactionDate");
 		YearMonth yearMonth = YearMonth.of(year, month);
 		LocalDateTime start = yearMonth.atDay(1).atStartOfDay();
 		LocalDateTime end = yearMonth.plusMonths(1).atDay(1).atStartOfDay();
-		return transactionRepository.findTransactionsInRange(userId, start, end, sort);
+		return transactionRepository.findTransactionsInRange(bookId, userId, start, end, sort);
 	}
 
 	public Transaction getTransactionByTransactionId(String transactionId) {

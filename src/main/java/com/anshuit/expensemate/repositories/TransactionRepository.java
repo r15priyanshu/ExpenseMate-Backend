@@ -11,9 +11,10 @@ import com.anshuit.expensemate.entities.Transaction;
 
 public interface TransactionRepository extends MongoRepository<Transaction, String> {
 
-	List<Transaction> findByUserId(String userId);
+	List<Transaction> findByBookIdAndUserId(String bookId, String userId);
 
-	@Query("{ 'userId': ?0, 'transactionDate': { $gte: ?1, $lt: ?2 } }")
-	List<Transaction> findTransactionsInRange(String userId, LocalDateTime start, LocalDateTime end, Sort sort);
+	@Query("{ 'bookId': ?0, 'userId': ?1, 'transactionDate': { $gte: ?2, $lt: ?3 } }")
+	List<Transaction> findTransactionsInRange(String bookId, String userId, LocalDateTime start, LocalDateTime end,
+			Sort sort);
 
 }

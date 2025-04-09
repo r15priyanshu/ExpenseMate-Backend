@@ -21,7 +21,10 @@ public class Transaction {
 	private LocalDateTime transactionDate;
 	private String transactionDescription;
 	private String transactionType;
+
 	@DBRef
 	private Category category;
+
 	private String userId;
+	private String bookId;
 }
