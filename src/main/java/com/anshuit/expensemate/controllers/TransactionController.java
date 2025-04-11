@@ -1,5 +1,6 @@
 package com.anshuit.expensemate.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anshuit.expensemate.constants.GlobalConstants;
+import com.anshuit.expensemate.dtos.GroupedTransactionDto;
 import com.anshuit.expensemate.dtos.TransactionDto;
 import com.anshuit.expensemate.dtos.TransactionsDetailsResponseDto;
 import com.anshuit.expensemate.entities.Transaction;
@@ -77,7 +79,20 @@ public class TransactionController {
 		transactionsDetailsResponseDto.setTotalCredit(totalCredit);
 		transactionsDetailsResponseDto.setTotalDebit(totalDebit);
 		transactionsDetailsResponseDto.setTotal(total);
-		transactionsDetailsResponseDto.setTransactions(allTransactionsDto);
+
+		Map<LocalDate, List<TransactionDto>> groupedTransactionsMap = allTransactionsDto.stream()
+				.collect(Collectors.groupingBy(transactionDto -> {
+					return transactionDto.getTransactionDate().toLocalDate();
+				}));
+
+		List<GroupedTransactionDto> groupedTransactions = groupedTransactionsMap.entrySet().stream().map(entry -> {
+			GroupedTransactionDto groupedTransactionDto = new GroupedTransactionDto();
+			groupedTransactionDto.setTransactionDate(entry.getKey());
+			groupedTransactionDto.setTransactions(entry.getValue());
+			return groupedTransactionDto;
+		}).toList();
+
+		transactionsDetailsResponseDto.setGroupedTransactions(groupedTransactions);
 		return new ResponseEntity<>(transactionsDetailsResponseDto, HttpStatus.OK);
 	}
 }

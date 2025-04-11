@@ -14,5 +14,5 @@ public class TransactionsDetailsResponseDto {
 	private double totalDebit;
 	private double totalCredit;
 	private double total;
-	private List<TransactionDto> transactions;
+	private List<GroupedTransactionDto> groupedTransactions;
 }
