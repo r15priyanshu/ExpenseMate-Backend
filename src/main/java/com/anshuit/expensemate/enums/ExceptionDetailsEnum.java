@@ -1,7 +1,5 @@
 package com.anshuit.expensemate.enums;
 
-import java.util.Objects;
-
 import com.anshuit.expensemate.constants.GlobalConstants;
 
 public enum ExceptionDetailsEnum {
@@ -26,6 +24,8 @@ public enum ExceptionDetailsEnum {
 	
 	// Books Related Constants
 	BOOK_NOT_FOUND_WITH_ID("2001", "Book Not Found With BookId : %s"),
+	
+	BOOK_CREATION_LIMIT_EXCEEDED("2002", "Maximum Book Creation Limit Exceeded , Allowed : "+GlobalConstants.BOOK_CREATION_MAXIMUM_LIMIT),
 
 	// JWT Related Constants
 	JWT_MALFORMED_EXCEPTION_MESSAGE("3001", "Token Malformed !! Token Might Have Been Tampered !!"),
@@ -65,12 +65,5 @@ public enum ExceptionDetailsEnum {
 
 	public String getExceptionMessage() {
 		return exceptionMessage;
-	}
-
-	public static String getFormattedExceptionMessage(ExceptionDetailsEnum exceptionDetailsEnum, Object... args) {
-		if (Objects.isNull(args) || args.length == 0)
-			return exceptionDetailsEnum.getExceptionMessage();
-
-		return String.format(exceptionDetailsEnum.getExceptionMessage(), args);
 	}
 }

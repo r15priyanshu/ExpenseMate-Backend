@@ -3,6 +3,7 @@ package com.anshuit.expensemate.exceptions;
 import org.springframework.http.HttpStatus;
 
 import com.anshuit.expensemate.enums.ExceptionDetailsEnum;
+import com.anshuit.expensemate.utils.CustomUtil;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ public class CustomException extends RuntimeException {
 	}
 
 	public CustomException(HttpStatus status, ExceptionDetailsEnum exceptionDetailsEnum, Object... args) {
-		super(ExceptionDetailsEnum.getFormattedExceptionMessage(exceptionDetailsEnum, args));
+		super(CustomUtil.getFormattedExceptionMessage(exceptionDetailsEnum, args));
 		this.exceptionDetailsEnum = exceptionDetailsEnum;
 		this.status = status;
 	}

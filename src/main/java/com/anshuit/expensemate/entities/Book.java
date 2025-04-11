@@ -21,5 +21,6 @@ public class Book {
 	private String bookName;
 	private String bookDescription;
 	private String bookOwner;
+	private boolean primary;
 	private LocalDateTime createdAt;
 }

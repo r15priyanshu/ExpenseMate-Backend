@@ -9,13 +9,13 @@ import org.springframework.data.mongodb.repository.Query;
 import com.anshuit.expensemate.entities.AppUser;
 
 public interface UserRepository extends MongoRepository<AppUser, String> {
-	@Query(value = "{ 'userId': ?0 }", fields = "{ transactions: 0 }")
+	@Query(value = "{ 'userId': ?0 }", fields = "{ transactions: 0, books: 0 }")
 	Optional<AppUser> findByIdPartial(Object userId);
 
-	@Query(value = "{ 'email': ?0 }", fields = "{ transactions: 0 }")
+	@Query(value = "{ 'email': ?0 }", fields = "{ transactions: 0, books: 0 }")
 	Optional<AppUser> findByEmailPartial(String email);
 
-	@Query(value = "{}", fields = "{ transactions: 0 }")
+	@Query(value = "{}", fields = "{ transactions: 0, books: 0 }")
 	List<AppUser> findAllPartial();
 
 	Optional<AppUser> findByEmail(String email);

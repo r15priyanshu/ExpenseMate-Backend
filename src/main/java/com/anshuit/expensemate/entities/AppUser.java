@@ -41,7 +41,7 @@ public class AppUser implements UserDetails {
 	@DBRef(lazy = true)
 	private List<Transaction> transactions = new ArrayList<>();
 
-	@DBRef
+	@DBRef(lazy = true)
 	private List<Book> books = new ArrayList<>();
 
 	@Override
