@@ -87,4 +87,10 @@ public class TransactionServiceImpl {
 					transactionId);
 		});
 	}
+
+	public Transaction deleteTransactionByTransactionId(String transactionId) {
+		Transaction foundTransaction = this.getTransactionByTransactionId(transactionId);
+		transactionRepository.delete(foundTransaction);
+		return foundTransaction;
+	}
 }
