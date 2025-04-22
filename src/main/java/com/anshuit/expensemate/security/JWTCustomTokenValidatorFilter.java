@@ -71,6 +71,8 @@ public class JWTCustomTokenValidatorFilter extends OncePerRequestFilter {
 				log.info("Token Is Valid !! User Successfully Authenticated !!");
 				UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
 						userDetails.getUsername(), null, userDetails.getAuthorities());
+				// SETTING COMPLETE USER OBJECT ITSELF IN AUTHENTICATION OJBECT TO FURTHER CHECK IN METHOD LEVEL SECURITY
+				authenticationToken.setDetails(userDetails);
 				SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 			}
 		} else {
