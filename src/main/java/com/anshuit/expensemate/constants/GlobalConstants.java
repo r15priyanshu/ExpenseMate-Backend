@@ -7,7 +7,7 @@ public class GlobalConstants {
 	private GlobalConstants() {
 	}
 
-	public static final String DEFAULT_APPLICATION_NAME = "ExpenseMate";
+	public static final String DEFAULT_APPLICATION_NAME = "EXPENSE-MATE";
 	public static final String DEFAULT_FRONTEND_APPLICATION_NAME = "ExpenseMate Frontend";
 	public static final String DEFAULT_FRONTEND_ORIGIN_URL = "http://localhost:4200";
 
@@ -17,6 +17,9 @@ public class GlobalConstants {
 	public static final String DEFAULT_ROLE_ONE_ID = "1";
 	public static final String DEFAULT_ROLE_TWO = "ROLE_ADMIN";
 	public static final String DEFAULT_ROLE_TWO_ID = "2";
+	
+	public static final String PROVIDER_EXPENSEMATE = "EXPENSE-MATE";
+	public static final String PROVIDER_GITHUB = "GITHUB";
 
 	public static final String DEFAULT_USER_ONE_ID = "1";
 	public static final String DEFAULT_USER_TWO_ID = "2";
@@ -47,6 +50,7 @@ public class GlobalConstants {
 
 	public static final String LOGIN_URL = "/auth/login";
 	public static final String REGISTER_URL = "/auth/register";
+	public static final String OAUTH2_SUCCESSFUL_LOGIN_REDIRECT_URL_TO_FRONTEND = DEFAULT_FRONTEND_ORIGIN_URL + "/auth?token=%s&refreshToken=%s";
 	public static final String CHECK_TOKEN_VALIDITY_URL = "/public/tokenAndRefreshToken/validateToken";
 	public static final String REFRESH_TOKEN_BY_USER_ID_URL = "/public/tokenAndRefreshToken/refreshToken/user/{userId}";
 	public static final String CHECK_REFRESH_TOKEN_VALIDITY_URL = "/public/tokenAndRefreshToken/validateRefreshToken";
@@ -69,7 +73,7 @@ public class GlobalConstants {
 
 	// SET OF URLS FOR WHICH JWT TOKEN VALIDATOR FILTER SHOULD NOT RUN
 	public static final Set<String> EXCLUDED_PATHS_FOR_JWT_TOKEN_VALIDATOR_FILTER_SET = Set.of(
-			GlobalConstants.LOGIN_URL, GlobalConstants.REGISTER_URL, GlobalConstants.CHECK_TOKEN_VALIDITY_URL,
+			GlobalConstants.LOGIN_URL, GlobalConstants.REGISTER_URL, GlobalConstants.OAUTH2_SUCCESSFUL_LOGIN_REDIRECT_URL_TO_FRONTEND,
 			GlobalConstants.CHECK_REFRESH_TOKEN_VALIDITY_URL, GlobalConstants.REFRESH_TOKEN_BY_USER_ID_URL,
 			GlobalConstants.DELETE_REFRESH_TOKEN_BY_TOKEN_STRING_IN_REQUEST_BODY_URL);
 }

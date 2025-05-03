@@ -16,6 +16,7 @@ public class AppUserDto {
 	private String email;
 	private String password;
 	private String profilePic;
+	private String provider;
 	// private String profilePicData;
 	private RoleDto role;
 	private List<TransactionDto> transactions;

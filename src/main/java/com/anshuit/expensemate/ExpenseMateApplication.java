@@ -55,7 +55,8 @@ public class ExpenseMateApplication implements ApplicationRunner {
 			user1.setLastName("Anand");
 			user1.setEmail("anshu@gmail.com");
 			user1.setPassword("12345");
-			AppUser savedUser1 = userService.createUser(user1, GlobalConstants.DEFAULT_ROLE_ONE_ID);
+			AppUser savedUser1 = userService.createUser(user1, GlobalConstants.DEFAULT_ROLE_ONE_ID,
+					GlobalConstants.PROVIDER_EXPENSEMATE);
 			return savedUser1;
 		});
 
@@ -66,7 +67,8 @@ public class ExpenseMateApplication implements ApplicationRunner {
 			user2.setLastName("Kumari");
 			user2.setEmail("shalu@gmail.com");
 			user2.setPassword("12345");
-			AppUser savedUser2 = userService.createUser(user2, GlobalConstants.DEFAULT_ROLE_TWO_ID);
+			AppUser savedUser2 = userService.createUser(user2, GlobalConstants.DEFAULT_ROLE_TWO_ID,
+					GlobalConstants.PROVIDER_EXPENSEMATE);
 			return savedUser2;
 		});
 

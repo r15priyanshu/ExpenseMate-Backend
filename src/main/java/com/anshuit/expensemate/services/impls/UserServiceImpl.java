@@ -38,7 +38,7 @@ public class UserServiceImpl {
 		return userRepository.save(appUser);
 	}
 
-	public AppUser createUser(AppUser user, String roleId) {
+	public AppUser createUser(AppUser user, String roleId, String provider) {
 		// First Check If User Is Not Already Registered.
 		Optional<AppUser> userOptional = this.getUserByEmailOptional(user.getEmail());
 		if (userOptional.isPresent()) {
@@ -47,6 +47,7 @@ public class UserServiceImpl {
 		}
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setProfilePic(GlobalConstants.DEFAULT_PROFILE_PIC_FILE_NAME);
+		user.setProvider(provider);
 		user.setRole(roleService.getRoleById(roleId));
 		user.setTransactions(new ArrayList<>());
 		return this.saveOrUpdateUser(user);

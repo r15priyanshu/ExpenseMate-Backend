@@ -87,7 +87,7 @@ public class AuthenticationController {
 	@PostMapping(GlobalConstants.REGISTER_URL)
 	public ResponseEntity<AppUserDto> registerEmployee(@RequestBody AppUserDto appUserDto) {
 		AppUser registeredUser = userService.createUser(dataTransferService.mapUserDtoToUser(appUserDto),
-				GlobalConstants.DEFAULT_ROLE_ONE_ID);
+				GlobalConstants.DEFAULT_ROLE_ONE_ID, GlobalConstants.PROVIDER_EXPENSEMATE);
 		AppUserDto registeredUserDto = dataTransferService.mapUserToUserDto(registeredUser);
 		return new ResponseEntity<>(registeredUserDto, HttpStatus.CREATED);
 	}
