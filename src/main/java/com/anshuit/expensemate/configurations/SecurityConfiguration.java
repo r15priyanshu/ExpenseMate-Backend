@@ -17,6 +17,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.anshuit.expensemate.constants.GlobalConstants;
+import com.anshuit.expensemate.security.CustomOAuth2AuthenticationSuccessHandler;
 import com.anshuit.expensemate.security.JWTCustomAuthenticationEntryPoint;
 import com.anshuit.expensemate.security.JWTCustomTokenValidatorFilter;
 
@@ -37,6 +38,9 @@ public class SecurityConfiguration {
 
 	@Autowired
 	private JWTCustomAuthenticationEntryPoint jwtCustomAuthenticationEntryPoint;
+
+	@Autowired
+	private CustomOAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
 	@Bean
 	PasswordEncoder getPasswordEncoder() {
@@ -61,6 +65,7 @@ public class SecurityConfiguration {
 		http.csrf(csrfCustomizer -> csrfCustomizer.disable());
 		http.formLogin(formLoginCustomizer -> formLoginCustomizer.disable());
 		http.httpBasic(httpBasicCustomizer -> httpBasicCustomizer.disable());
+		http.oauth2Login(oauth2LoginCustomizer -> oauth2LoginCustomizer.successHandler(oAuth2AuthenticationSuccessHandler));
 		return http.build();
 	}
 

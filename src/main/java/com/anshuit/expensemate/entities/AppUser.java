@@ -33,6 +33,7 @@ public class AppUser implements UserDetails {
 	private String email;
 	private String password;
 	private String profilePic;
+	private String provider;
 	private byte[] profilePicData;
 
 	@DBRef

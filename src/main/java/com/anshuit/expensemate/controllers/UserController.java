@@ -39,7 +39,8 @@ public class UserController {
 	@PostMapping("/users")
 	public ResponseEntity<AppUserDto> createUser(@RequestBody AppUserDto appUserDto) {
 		AppUser user = dataTransferService.mapUserDtoToUser(appUserDto);
-		AppUser savedUser = userService.createUser(user, GlobalConstants.DEFAULT_ROLE_ONE_ID);
+		AppUser savedUser = userService.createUser(user, GlobalConstants.DEFAULT_ROLE_ONE_ID,
+				GlobalConstants.PROVIDER_EXPENSEMATE);
 		AppUserDto savedUserDto = dataTransferService.mapUserToUserDto(savedUser);
 		return new ResponseEntity<>(savedUserDto, HttpStatus.CREATED);
 	}
