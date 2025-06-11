@@ -1,0 +1,39 @@
+============================ STEPS FOR CREATING DOCKER IMAGE USING DOCKERFILE AND RUN CONTAINER
+- Change packaging of the application to .jar in pom.xml
+- Change final jar  name of the application in build in pom.xml
+- Create docker file without any extension.
+- You must build your application first using maven , so that it has .jar file in its target folder:
+		>> docker build -t r15priyanshu/expensemate-backend:latest .
+- You can now create containers from the image:
+		>> docker run --name expensemate-backend-instance -d -e MONGODB_URI=mongodb://host.docker.internal:27017/expensemate -e OAUTH2_GITHUB_CLIENT_ID=Ov23likzQSOkVxLoF9Ql -e OAUTH2_GITHUB_CLIENT_SECRET=2a2e11ce9b9a3da23a690222879acaab3e01b034 -p 8080:8080 r15priyanshu/expensemate
+
+============================ STEPS FOR CREATING DOCKER IMAGE USING BUILD PACKS AND RUN CONTAINER
+- Change packaging of the application to .jar in pom.xml
+- Just add image name, tag name in "Spring Boot Maven Plugin" in pom.xml 
+- Just run below maven command to generate the image:
+		>> mvn spring-boot:build-image -DskipTests
+- You can now create containers from the image:
+		>> docker run --name expensemate-backend-instance -d -e MONGODB_URI=mongodb://host.docker.internal:27017/expensemate -e OAUTH2_GITHUB_CLIENT_ID=Ov23likzQSOkVxLoF9Ql -e OAUTH2_GITHUB_CLIENT_SECRET=2a2e11ce9b9a3da23a690222879acaab3e01b034 -p 8080:8080 r15priyanshu/expensemate
+
+============================ STEPS FOR CREATING DOCKER IMAGE USING GOOGLE JIB AND RUN CONTAINER
+- Change packaging of the application to .jar in pom.xml
+- Add Google Jib Maven Plugin and add image/tag name etc in pom.xml 
+- Just run below maven command to generate the image:
+		>> mvn compile jib:dockerBuild -DskipTests
+- You can now create containers from the image:
+		>> docker run --name expensemate-backend-instance -d -e MONGODB_URI=mongodb://host.docker.internal:27017/expensemate -e OAUTH2_GITHUB_CLIENT_ID=Ov23likzQSOkVxLoF9Ql -e OAUTH2_GITHUB_CLIENT_SECRET=2a2e11ce9b9a3da23a690222879acaab3e01b034 -p 8080:8080 r15priyanshu/expensemate
+		
+============================ STEPS FOR CREATING DOCKER IMAGE USING DOCKER COMPOSE AND RUN CONTAINER
+- Change packaging of the application to .jar in pom.xml
+- Change final jar  name of the application in build in pom.xml
+- Create docker file without any extension. 
+- create docker-compose.yml file and configure it to use the Dockerfile created in previous step to create/build image.
+- Here in docker-compose.yml file itself , you can configure image name,port mappings, environment variables,etc that you had to add while using docker run command.
+- Run below command to both build image and then run container - 	
+	>> docker compose up --build ( This will look for Dockerfile to build image )
+	
+NOTE: 
+It is not necessary that you have to use/create Dockerfile to create image.
+You can create image using above methods ( buildpack,gib etc ).
+And simply run >> docker compose up. 
+It will now try to only fetch/use the already created image and not build it.

@@ -1,0 +1,58 @@
+#NOTES:
+#------THE PLACEHOLDER [ ${} ] IN THE ENVIROMENT SECTION WILL GET VALUE FROM .env FILE OF THE PROJECT.
+
+#DEFINING CUSTOM NETWORK
+networks:
+  expensemate-network:
+    name: expensemate-network
+    driver: bridge
+
+#DEFINING CUSTOM VOLUMES    
+volumes:
+  expensemate-database-data-volume:
+    name: expensemate-database-data-volume
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${EXPENSEMATE_DATABASE_DATA_VOLUME_PATH}
+
+############################### DEFINING ALL SERVICES ###############################
+services:
+  expensemate-mongodb-database-service:
+    image: mongo:latest
+    container_name: expensemate-mongodb-instance
+    ports:
+      - 27018:27017
+    volumes:
+      - expensemate-database-data-volume:/data/db
+    networks: 
+      - expensemate-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  expensemate-backend-service:
+    #IF YOU SPECIFY BUILD, THEN IT WILL TRY TO LOOK FOR DOCKERFILE FOR THIS SERVICE IN THE BUILD CONTEXT PROVIDED.
+    build: 
+      context: .
+      dockerfile: Dockerfile 
+    image: ${DOCKER_ACCOUNT_USERNAME}/expensemate-backend:latest
+    restart: always
+    container_name: expensemate-backend-instance
+    networks: 
+      - expensemate-network
+    ports:
+      - 8080:8080
+    environment:
+      #( WHEN YOU WANT TO CONNECT YOUR DOCKER CONTAINER TO MONGO RUNNING ON YOUR LOCAL WINDOWS MACHINE)
+      #- MONGODB_URI=mongodb://host.docker.internal:27017/expensemate 
+      - MONGODB_URI=mongodb://expensemate-mongodb-database-service:27017/expensemate
+      - OAUTH2_GITHUB_CLIENT_ID=$OAUTH2_GITHUB_CLIENT_ID}
+      - OAUTH2_GITHUB_CLIENT_SECRET=${OAUTH2_GITHUB_CLIENT_SECRET}
+    depends_on:
+      expensemate-mongodb-database-service:
+        condition: service_healthy

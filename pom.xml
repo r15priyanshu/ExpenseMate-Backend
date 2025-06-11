@@ -6,14 +6,15 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.4</version>
+		<version>3.5.0</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.anshuit</groupId>
 	<artifactId>expensemate</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>expensemate</name>
-	<description>Demo Project For Expense Management</description>
+	<description>Working Project For Expense Management</description>
+	<packaging>jar</packaging>
 	<url />
 	<licenses>
 		<license />
@@ -35,22 +36,18 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-client</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
@@ -68,33 +65,28 @@
 			<version>0.12.6</version>
 			<scope>runtime</scope>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.apache.tika/tika-core -->
 		<dependency>
 			<groupId>org.apache.tika</groupId>
 			<artifactId>tika-core</artifactId>
 			<version>2.9.2</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>3.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-
-		<dependency>
-			<groupId>org.modelmapper</groupId>
-			<artifactId>modelmapper</artifactId>
-			<version>3.2.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -103,17 +95,52 @@
 	</dependencies>
 
 	<build>
+		<!-- CHANGING THE FINAL JAR NAME THAT GETS CREATED AFTER A SUCCESSFULL BUILD -->
+		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<!-- DEFAULT SPRING BOOT MAVEN PLUGIN CAN CREATE DOCKER IMAGE AS IT USES BUILDPACKS ( PACKETO )-->
+					<!-- mvn spring-boot:build-image-->
+					<image>
+						<name>r15priyanshu/${project.artifactId}-backend:latest</name>
+					</image>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+
+				<!-- BELOW EXECUTIONS IS CONFIGURED JUST TO TELL THAT WHENEVER
+				"mvn install" IS RUN , RUN THIS "build-image" goal also FROM THIS PLUGIN.
+				<executions>
+					<execution>
+						<id>custom-id-build-docker-image</id>
+						<phase>install</phase>
+						<goals>
+							<goal>build-image</goal>
+						</goals>
+					</execution>
+				</executions>
+				-->
+			</plugin>
+
+			<!-- GOOGLE JIB MAVEN PLUGIN -->
+			<!-- mvn compile jib:build ==> build image and push online.-->
+			<!-- mvn compile jib:dockerBuild ==> build image locally only.-->
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.5</version>
+				<configuration>
+					<to>
+						<image>
+							docker.io/r15priyanshu/${project.artifactId}-backend:latest</image>
+					</to>
 				</configuration>
 			</plugin>
 		</plugins>
